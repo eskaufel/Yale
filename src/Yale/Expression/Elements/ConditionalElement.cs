@@ -52,7 +52,9 @@ namespace Yale.Expression.Elements
                 return;
             }
 
-            var ilgTemp = CreateTempIlGenerator(ilGenerator);
+            var dynamicMethod = new DynamicMethod("temp", typeof(int), null, GetType());
+            var ilgTemp = new YaleIlGenerator(dynamicMethod.GetILGenerator(), ilGenerator.Length, true);
+
             Utility.SyncFleeIlGeneratorLabels(ilGenerator, ilgTemp);
 
             // Emit fake conditional to get branch target positions

@@ -7,21 +7,21 @@ namespace Yale.Expression.Elements.Literals.Integral
 {
     internal class Int64LiteralElement : IntegralLiteralElement
     {
-        private Int64 _value;
+        private Int64 value;
         private const string MinValue = "9223372036854775808";
-        private readonly bool _isMinValue;
+        private readonly bool isMinValue;
 
         public Int64LiteralElement(Int64 value)
         {
-            _value = value;
+            this.value = value;
         }
 
         private Int64LiteralElement()
         {
-            _isMinValue = true;
+            isMinValue = true;
         }
 
-        public static Int64LiteralElement TryCreate(string image, bool isHex, bool negated)
+        public static Int64LiteralElement? TryCreate(string image, bool isHex, bool negated)
         {
             if (negated & image == MinValue)
             {
@@ -58,18 +58,18 @@ namespace Yale.Expression.Elements.Literals.Integral
 
         public override void Emit(YaleIlGenerator ilGenerator, ExpressionContext context)
         {
-            EmitLoad(_value, ilGenerator);
+            EmitLoad(value, ilGenerator);
         }
 
         public void Negate()
         {
-            if (_isMinValue)
+            if (isMinValue)
             {
-                _value = Int64.MinValue;
+                value = Int64.MinValue;
             }
             else
             {
-                _value = -_value;
+                value = -value;
             }
         }
 

@@ -11,7 +11,7 @@ namespace Yale.Parser.Internal
             return null;
         }
 
-        public MethodBase BindToMethod(BindingFlags bindingAttr, MethodBase[] match, ref object[] args, ParameterModifier[] modifiers, CultureInfo culture, string[] names, ref object state)
+        public static MethodBase BindToMethod(BindingFlags bindingAttr, MethodBase[] match, ref object[] args, ParameterModifier[] modifiers, CultureInfo culture, string[] names, ref object state)
         {
             return null;
         }

@@ -4,13 +4,14 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Yale.Expression.Elements.Base.Literals;
 using Yale.Parser.Internal;
+using Yale.Resources;
 
 namespace Yale.Expression.Elements.Literals.Real
 {
     internal class DecimalLiteralElement : RealLiteralElement
     {
         private static readonly ConstructorInfo OurConstructorInfo = GetConstructor();
-        private readonly decimal _value;
+        private readonly decimal value;
 
         private DecimalLiteralElement()
         {
@@ -18,7 +19,7 @@ namespace Yale.Expression.Elements.Literals.Real
 
         public DecimalLiteralElement(decimal value)
         {
-            _value = value;
+            this.value = value;
         }
 
         private static ConstructorInfo GetConstructor()
@@ -44,8 +45,7 @@ namespace Yale.Expression.Elements.Literals.Real
             }
             catch (OverflowException)
             {
-                element.OnParseOverflow(image);
-                return null;
+                throw element.CreateCompileException(CompileErrors.ValueNotRepresentableInType, CompileExceptionReason.ConstantOverflow, image, element.Name);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Yale.Expression.Elements.Literals.Real
             var index = ilGenerator.GetTempLocalIndex(typeof(decimal));
             Utility.EmitLoadLocalAddress(ilGenerator, index);
 
-            var bits = decimal.GetBits(_value);
+            var bits = decimal.GetBits(value);
             EmitLoad(bits[0], ilGenerator);
             EmitLoad(bits[1], ilGenerator);
             EmitLoad(bits[2], ilGenerator);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Reflection.Emit;
 using Yale.Parser.Internal;
 
 namespace Yale.Expression.Elements.Base
@@ -28,12 +27,6 @@ namespace Yale.Expression.Elements.Base
             var message = string.Format(CultureInfo.InvariantCulture, messageTemplate, arguments);
             message = string.Concat(Name, ": ", message);
             return new ExpressionCompileException(message, reason);
-        }
-
-        protected YaleIlGenerator CreateTempIlGenerator(YaleIlGenerator ilgCurrent)
-        {
-            var dynamicMethod = new DynamicMethod("temp", typeof(int), null, GetType());
-            return new YaleIlGenerator(dynamicMethod.GetILGenerator(), ilgCurrent.Length, true);
         }
     }
 }

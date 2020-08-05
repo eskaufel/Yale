@@ -6,16 +6,16 @@ namespace Yale.Expression.Elements.Literals
 {
     internal class BooleanLiteralElement : LiteralElement
     {
-        private readonly bool _value;
+        private readonly bool value;
 
         public BooleanLiteralElement(bool value)
         {
-            _value = value;
+            this.value = value;
         }
 
         public override void Emit(YaleIlGenerator ilGenerator, ExpressionContext context)
         {
-            EmitLoad(_value, ilGenerator);
+            EmitLoad(value, ilGenerator);
         }
 
         public override Type ResultType => typeof(bool);

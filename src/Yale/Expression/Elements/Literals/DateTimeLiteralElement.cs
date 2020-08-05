@@ -9,13 +9,13 @@ namespace Yale.Expression.Elements.Literals
 {
     internal class DateTimeLiteralElement : LiteralElement
     {
-        private readonly DateTime _value;
+        private readonly DateTime value;
 
         public DateTimeLiteralElement(string image, ExpressionContext context)
         {
             var options = context.BuilderOptions;
 
-            if (DateTime.TryParseExact(image, options.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _value) == false)
+            if (DateTime.TryParseExact(image, options.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out value) == false)
             {
                 throw CreateCompileException(CompileErrors.CannotParseType, CompileExceptionReason.InvalidFormat, typeof(DateTime).Name);
             }
@@ -27,7 +27,7 @@ namespace Yale.Expression.Elements.Literals
 
             Utility.EmitLoadLocalAddress(ilGenerator, index);
 
-            EmitLoad(_value.Ticks, ilGenerator);
+            EmitLoad(value.Ticks, ilGenerator);
 
             var constructor = typeof(DateTime).GetConstructor(new[] { typeof(Int64) });
 

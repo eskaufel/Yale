@@ -73,8 +73,10 @@ namespace Yale.Expression.Elements.LogicalBitwise
         {
             // We have to do a 'fake' emit so we can get the positions of the labels
             var info = new ShortCircuitInfo();
+
             // Create a temporary IL generator
-            var ilgTemp = CreateTempIlGenerator(ilGenerator);
+            var dynamicMethod = new DynamicMethod("temp", typeof(int), null, GetType());
+            var ilgTemp = new YaleIlGenerator(dynamicMethod.GetILGenerator(), ilGenerator.Length, true);
 
             // We have to make sure that the label count for the temp YaleIlGenerator matches our real YaleIlGenerator
             Utility.SyncFleeIlGeneratorLabels(ilGenerator, ilgTemp);

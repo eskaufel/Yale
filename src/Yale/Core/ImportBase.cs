@@ -39,7 +39,7 @@ namespace Yale.Core
         }
 
         //Todo: Reimplement
-        protected bool AlwaysMemberFilter(MemberInfo member, object criteria) => true;
+        protected static bool AlwaysMemberFilter(MemberInfo member, object criteria) => true;
 
         internal abstract bool IsMatch(string name);
 

@@ -90,7 +90,6 @@ namespace Yale.Expression
 
             analyzer.SetContext(context);
             var rootNode = Parse();
-            analyzer.Reset();
 
             var topElement = (BaseExpressionElement)rootNode.Values[0];
             return topElement;

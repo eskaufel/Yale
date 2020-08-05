@@ -27,16 +27,15 @@ namespace Yale.Parser
         private readonly Regex regularEscapeRegex = new Regex("\\\\[\\\\\"'trn]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private bool inUnaryNegate;
-        private ExpressionContext? context;
+        private ExpressionContext context;
 
+        /// <summary>
+        /// Set context for expression analyzer. This property can be changed to reset context
+        /// </summary>
+        /// <param name="context"></param>
         public void SetContext(ExpressionContext context)
         {
             this.context = context;
-        }
-
-        public override void Reset()
-        {
-            context = null;
         }
 
         public override Node ExitExpression(Production node)

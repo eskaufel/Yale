@@ -7,16 +7,16 @@ namespace Yale.Expression.Elements.Literals
 {
     internal class StringLiteralElement : LiteralElement
     {
-        private readonly string _value;
+        private readonly string value;
 
         public StringLiteralElement(string value)
         {
-            _value = value;
+            this.value = value;
         }
 
         public override void Emit(YaleIlGenerator ilGenerator, ExpressionContext context)
         {
-            ilGenerator.Emit(OpCodes.Ldstr, _value);
+            ilGenerator.Emit(OpCodes.Ldstr, value);
         }
 
         public override Type ResultType => typeof(string);

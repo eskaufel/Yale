@@ -8,11 +8,6 @@ namespace Yale.Expression.Elements.Base.Literals
 {
     internal abstract class LiteralElement : BaseExpressionElement
     {
-        protected void OnParseOverflow(string image)
-        {
-            throw CreateCompileException(CompileErrors.ValueNotRepresentableInType, CompileExceptionReason.ConstantOverflow, image, ResultType.Name);
-        }
-
         public static void EmitLoad(int value, YaleIlGenerator ilg)
         {
             if (value >= -1 & value <= 8)

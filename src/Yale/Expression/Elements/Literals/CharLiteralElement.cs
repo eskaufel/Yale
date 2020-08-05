@@ -6,16 +6,16 @@ namespace Yale.Expression.Elements.Literals
 {
     internal class CharLiteralElement : LiteralElement
     {
-        private readonly char _value;
+        private readonly char value;
 
         public CharLiteralElement(char value)
         {
-            _value = value;
+            this.value = value;
         }
 
         public override void Emit(YaleIlGenerator ilGenerator, ExpressionContext context)
         {
-            var intValue = Convert.ToInt32(_value);
+            var intValue = Convert.ToInt32(value);
             EmitLoad(intValue, ilGenerator);
         }
 

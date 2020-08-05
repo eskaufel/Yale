@@ -20,18 +20,18 @@ namespace Yale.Parser.Internal
         {
             // Create a table with all the primitive types
             Type[] types = {
-            typeof(char),
-            typeof(byte),
-            typeof(sbyte),
-            typeof(short),
-            typeof(ushort),
-            typeof(int),
-            typeof(uint),
-            typeof(Int64),
-            typeof(UInt64),
-            typeof(float),
-            typeof(double)
-        };
+                typeof(char),
+                typeof(byte),
+                typeof(sbyte),
+                typeof(short),
+                typeof(ushort),
+                typeof(int),
+                typeof(uint),
+                typeof(Int64),
+                typeof(UInt64),
+                typeof(float),
+                typeof(double)
+            };
             OurBinaryTypes = types;
             var table = new Type[types.Length, types.Length];
             OurBinaryResultTable = table;
@@ -224,35 +224,18 @@ namespace Yale.Parser.Internal
             var sourceTypeCode = Type.GetTypeCode(sourceType);
             var destTypeCode = Type.GetTypeCode(destinationType);
 
-            switch (destTypeCode)
+            return destTypeCode switch
             {
-                case TypeCode.Int16:
-                    return ImplicitConvertToInt16(sourceTypeCode);
-
-                case TypeCode.UInt16:
-                    return ImplicitConvertToUInt16(sourceTypeCode);
-
-                case TypeCode.Int32:
-                    return ImplicitConvertToInt32(sourceTypeCode);
-
-                case TypeCode.UInt32:
-                    return ImplicitConvertToUInt32(sourceTypeCode);
-
-                case TypeCode.Double:
-                    return ImplicitConvertToDouble(sourceTypeCode, ilGenerator);
-
-                case TypeCode.Single:
-                    return ImplicitConvertToSingle(sourceTypeCode, ilGenerator);
-
-                case TypeCode.Int64:
-                    return ImplicitConvertToInt64(sourceTypeCode, ilGenerator);
-
-                case TypeCode.UInt64:
-                    return ImplicitConvertToUInt64(sourceTypeCode, ilGenerator);
-
-                default:
-                    return false;
-            }
+                TypeCode.Int16 => ImplicitConvertToInt16(sourceTypeCode),
+                TypeCode.UInt16 => ImplicitConvertToUInt16(sourceTypeCode),
+                TypeCode.Int32 => ImplicitConvertToInt32(sourceTypeCode),
+                TypeCode.UInt32 => ImplicitConvertToUInt32(sourceTypeCode),
+                TypeCode.Double => ImplicitConvertToDouble(sourceTypeCode, ilGenerator),
+                TypeCode.Single => ImplicitConvertToSingle(sourceTypeCode, ilGenerator),
+                TypeCode.Int64 => ImplicitConvertToInt64(sourceTypeCode, ilGenerator),
+                TypeCode.UInt64 => ImplicitConvertToUInt64(sourceTypeCode, ilGenerator),
+                _ => false,
+            };
         }
 
         private static bool ImplicitConvertToInt16(TypeCode sourceTypeCode)
@@ -501,53 +484,24 @@ namespace Yale.Parser.Internal
         {
             var typeCode = Type.GetTypeCode(type);
 
-            switch (typeCode)
+            return typeCode switch
             {
-                case TypeCode.Byte:
-                    return 1;
-
-                case TypeCode.SByte:
-                    return 2;
-
-                case TypeCode.Char:
-                    return 3;
-
-                case TypeCode.Int16:
-                    return 4;
-
-                case TypeCode.UInt16:
-                    return 5;
-
-                case TypeCode.Int32:
-                    return 6;
-
-                case TypeCode.UInt32:
-                    return 7;
-
-                case TypeCode.Int64:
-                    return 8;
-
-                case TypeCode.UInt64:
-                    return 9;
-
-                case TypeCode.Single:
-                    return 10;
-
-                case TypeCode.Double:
-                    return 11;
-
-                case TypeCode.Decimal:
-                    return 11;
-
-                case TypeCode.Boolean:
-                    return 12;
-
-                case TypeCode.DateTime:
-                    return 13;
-
-                default:
-                    return -1;
-            }
+                TypeCode.Byte => 1,
+                TypeCode.SByte => 2,
+                TypeCode.Char => 3,
+                TypeCode.Int16 => 4,
+                TypeCode.UInt16 => 5,
+                TypeCode.Int32 => 6,
+                TypeCode.UInt32 => 7,
+                TypeCode.Int64 => 8,
+                TypeCode.UInt64 => 9,
+                TypeCode.Single => 10,
+                TypeCode.Double => 11,
+                TypeCode.Decimal => 11,
+                TypeCode.Boolean => 12,
+                TypeCode.DateTime => 13,
+                _ => -1,
+            };
         }
 
         private static int GetReferenceTypeImplicitConvertScore(Type sourceType, Type destinationType)

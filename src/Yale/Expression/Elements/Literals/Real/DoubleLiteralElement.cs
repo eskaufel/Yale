@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Reflection.Emit;
 using Yale.Expression.Elements.Base.Literals;
 using Yale.Parser.Internal;
+using Yale.Resources;
 
 namespace Yale.Expression.Elements.Literals.Real
 {
@@ -30,8 +31,7 @@ namespace Yale.Expression.Elements.Literals.Real
             }
             catch (OverflowException)
             {
-                element.OnParseOverflow(image);
-                return null;
+                throw element.CreateCompileException(CompileErrors.ValueNotRepresentableInType, CompileExceptionReason.ConstantOverflow, image, element.Name);
             }
         }
 

@@ -8,23 +8,23 @@ namespace Yale.Parser.Internal
 {
     internal class YaleIlGenerator
     {
-        private readonly ILGenerator _ilGenerator;
-        private readonly Dictionary<Type, LocalBuilder> _localBuilderTemp;
+        private readonly ILGenerator ilGenerator;
+        private readonly Dictionary<Type, LocalBuilder> localBuilderTemp;
 
         public YaleIlGenerator(ILGenerator ilg, int startLength = 0, bool isTemp = false)
         {
-            _ilGenerator = ilg;
-            _localBuilderTemp = new Dictionary<Type, LocalBuilder>();
+            ilGenerator = ilg;
+            localBuilderTemp = new Dictionary<Type, LocalBuilder>();
             IsTemp = isTemp;
             Length = startLength;
         }
 
         public int GetTempLocalIndex(Type localType)
         {
-            if (_localBuilderTemp.TryGetValue(localType, out var local) == false)
+            if (localBuilderTemp.TryGetValue(localType, out var local) == false)
             {
-                local = _ilGenerator.DeclareLocal(localType);
-                _localBuilderTemp.Add(localType, local);
+                local = ilGenerator.DeclareLocal(localType);
+                localBuilderTemp.Add(localType, local);
             }
 
             return local.LocalIndex;
@@ -33,101 +33,101 @@ namespace Yale.Parser.Internal
         public void Emit(OpCode op)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op);
+            ilGenerator.Emit(op);
         }
 
         public void Emit(OpCode op, Type arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, ConstructorInfo arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, MethodInfo arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, FieldInfo arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, byte arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, sbyte arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, short arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, int arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, long arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, float arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, double arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, string arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void Emit(OpCode op, Label arg)
         {
             RecordOpcode(op);
-            _ilGenerator.Emit(op, arg);
+            ilGenerator.Emit(op, arg);
         }
 
         public void MarkLabel(Label lbl)
         {
-            _ilGenerator.MarkLabel(lbl);
+            ilGenerator.MarkLabel(lbl);
         }
 
         public Label DefineLabel()
         {
             LabelCount += 1;
-            return _ilGenerator.DefineLabel();
+            return ilGenerator.DefineLabel();
         }
 
         public LocalBuilder DeclareLocal(Type localType)
         {
-            return _ilGenerator.DeclareLocal(localType);
+            return ilGenerator.DeclareLocal(localType);
         }
 
         private void RecordOpcode(OpCode op)
@@ -184,7 +184,7 @@ namespace Yale.Parser.Internal
 
         public int LabelCount { get; private set; }
 
-        private int IlGeneratorLength => Utility.GetIlGeneratorLength(_ilGenerator);
+        private int IlGeneratorLength => Utility.GetIlGeneratorLength(ilGenerator);
 
         public bool IsTemp { get; }
     }

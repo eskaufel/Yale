@@ -363,281 +363,78 @@ namespace Yale.Parser
         /// <returns></returns>
         public override Node Exit(Node node)
         {
-            switch ((Token)node.Id)
+            return ((Token)node.Id) switch
             {
-                case Token.ADD:
-
-                    return ExitAdd((GrammaticaToken)node);
-
-                case Token.SUB:
-
-                    return ExitSub((GrammaticaToken)node);
-
-                case Token.MUL:
-
-                    return ExitMul((GrammaticaToken)node);
-
-                case Token.DIV:
-
-                    return ExitDiv((GrammaticaToken)node);
-
-                case Token.POWER:
-
-                    return ExitPower((GrammaticaToken)node);
-
-                case Token.MOD:
-
-                    return ExitMod((GrammaticaToken)node);
-
-                case Token.LEFT_PAREN:
-
-                    return ExitLeftParen((GrammaticaToken)node);
-
-                case Token.RIGHT_PAREN:
-
-                    return ExitRightParen((GrammaticaToken)node);
-
-                case Token.LEFT_BRACE:
-
-                    return ExitLeftBrace((GrammaticaToken)node);
-
-                case Token.RIGHT_BRACE:
-
-                    return ExitRightBrace((GrammaticaToken)node);
-
-                case Token.EQ:
-
-                    return ExitEq((GrammaticaToken)node);
-
-                case Token.LT:
-
-                    return ExitLt((GrammaticaToken)node);
-
-                case Token.GT:
-
-                    return ExitGt((GrammaticaToken)node);
-
-                case Token.LTE:
-
-                    return ExitLte((GrammaticaToken)node);
-
-                case Token.GTE:
-
-                    return ExitGte((GrammaticaToken)node);
-
-                case Token.NE:
-
-                    return ExitNe((GrammaticaToken)node);
-
-                case Token.AND:
-
-                    return ExitAnd((GrammaticaToken)node);
-
-                case Token.OR:
-
-                    return ExitOr((GrammaticaToken)node);
-
-                case Token.XOR:
-
-                    return ExitXor((GrammaticaToken)node);
-
-                case Token.NOT:
-
-                    return ExitNot((GrammaticaToken)node);
-
-                case Token.IN:
-
-                    return ExitIn((GrammaticaToken)node);
-
-                case Token.DOT:
-
-                    return ExitDot((GrammaticaToken)node);
-
-                case Token.ARGUMENT_SEPARATOR:
-
-                    return ExitArgumentSeparator((GrammaticaToken)node);
-
-                case Token.ARRAY_BRACES:
-
-                    return ExitArrayBraces((GrammaticaToken)node);
-
-                case Token.LEFT_SHIFT:
-
-                    return ExitLeftShift((GrammaticaToken)node);
-
-                case Token.RIGHT_SHIFT:
-
-                    return ExitRightShift((GrammaticaToken)node);
-
-                case Token.INTEGER:
-
-                    return ExitInteger((GrammaticaToken)node);
-
-                case Token.REAL:
-
-                    return ExitReal((GrammaticaToken)node);
-
-                case Token.STRING_LITERAL:
-
-                    return ExitStringLiteral((GrammaticaToken)node);
-
-                case Token.CHAR_LITERAL:
-
-                    return ExitCharLiteral((GrammaticaToken)node);
-
-                case Token.TRUE:
-
-                    return ExitTrue((GrammaticaToken)node);
-
-                case Token.FALSE:
-
-                    return ExitFalse((GrammaticaToken)node);
-
-                case Token.IDENTIFIER:
-
-                    return ExitIdentifier((GrammaticaToken)node);
-
-                case Token.HEX_LITERAL:
-
-                    return ExitHexliteral((GrammaticaToken)node);
-
-                case Token.NULL_LITERAL:
-
-                    return ExitNullLiteral((GrammaticaToken)node);
-
-                case Token.TIMESPAN:
-
-                    return ExitTimeSpan((GrammaticaToken)node);
-
-                case Token.DATETIME:
-
-                    return ExitDatetime((GrammaticaToken)node);
-
-                case Token.IF:
-
-                    return ExitIf((GrammaticaToken)node);
-
-                case Token.CAST:
-
-                    return ExitCast((GrammaticaToken)node);
-
-                case Token.EXPRESSION:
-
-                    return ExitExpression((Production)node);
-
-                case Token.XOR_EXPRESSION:
-
-                    return ExitXorExpression((Production)node);
-
-                case Token.OR_EXPRESSION:
-
-                    return ExitOrExpression((Production)node);
-
-                case Token.AND_EXPRESSION:
-
-                    return ExitAndExpression((Production)node);
-
-                case Token.NOT_EXPRESSION:
-
-                    return ExitNotExpression((Production)node);
-
-                case Token.IN_EXPRESSION:
-
-                    return ExitInExpression((Production)node);
-
-                case Token.IN_TARGET_EXPRESSION:
-
-                    return ExitInTargetExpression((Production)node);
-
-                case Token.IN_LIST_TARGET_EXPRESSION:
-
-                    return ExitInListTargetExpression((Production)node);
-
-                case Token.COMPARE_EXPRESSION:
-
-                    return ExitCompareExpression((Production)node);
-
-                case Token.SHIFT_EXPRESSION:
-
-                    return ExitShiftExpression((Production)node);
-
-                case Token.ADDITIVE_EXPRESSION:
-
-                    return ExitAdditiveExpression((Production)node);
-
-                case Token.MULTIPLICATIVE_EXPRESSION:
-
-                    return ExitMultiplicativeExpression((Production)node);
-
-                case Token.POWER_EXPRESSION:
-
-                    return ExitPowerExpression((Production)node);
-
-                case Token.NEGATE_EXPRESSION:
-
-                    return ExitNegateExpression((Production)node);
-
-                case Token.MEMBER_EXPRESSION:
-
-                    return ExitMemberExpression((Production)node);
-
-                case Token.MEMBER_ACCESS_EXPRESSION:
-
-                    return ExitMemberAccessExpression((Production)node);
-
-                case Token.BASIC_EXPRESSION:
-
-                    return ExitBasicExpression((Production)node);
-
-                case Token.MEMBER_FUNCTION_EXPRESSION:
-
-                    return ExitMemberFunctionExpression((Production)node);
-
-                case Token.FIELD_PROPERTY_EXPRESSION:
-
-                    return ExitFieldPropertyExpression((Production)node);
-
-                case Token.SPECIAL_FUNCTION_EXPRESSION:
-
-                    return ExitSpecialFunctionExpression((Production)node);
-
-                case Token.IF_EXPRESSION:
-
-                    return ExitIfExpression((Production)node);
-
-                case Token.CAST_EXPRESSION:
-
-                    return ExitCastExpression((Production)node);
-
-                case Token.CAST_TYPE_EXPRESSION:
-
-                    return ExitCastTypeExpression((Production)node);
-
-                case Token.INDEX_EXPRESSION:
-
-                    return ExitIndexExpression((Production)node);
-
-                case Token.FUNCTION_CALL_EXPRESSION:
-
-                    return ExitFunctionCallExpression((Production)node);
-
-                case Token.ARGUMENT_LIST:
-
-                    return ExitArgumentList((Production)node);
-
-                case Token.LITERAL_EXPRESSION:
-
-                    return ExitLiteralExpression((Production)node);
-
-                case Token.BOOLEAN_LITERAL_EXPRESSION:
-
-                    return ExitBooleanLiteralExpression((Production)node);
-
-                case Token.EXPRESSION_GROUP:
-
-                    return ExitExpressionGroup((Production)node);
-            }
-            return node;
+                Token.ADD => ExitAdd((GrammaticaToken)node),
+                Token.SUB => ExitSub((GrammaticaToken)node),
+                Token.MUL => ExitMul((GrammaticaToken)node),
+                Token.DIV => ExitDiv((GrammaticaToken)node),
+                Token.POWER => ExitPower((GrammaticaToken)node),
+                Token.MOD => ExitMod((GrammaticaToken)node),
+                Token.LEFT_PAREN => ExitLeftParen((GrammaticaToken)node),
+                Token.RIGHT_PAREN => ExitRightParen((GrammaticaToken)node),
+                Token.LEFT_BRACE => ExitLeftBrace((GrammaticaToken)node),
+                Token.RIGHT_BRACE => ExitRightBrace((GrammaticaToken)node),
+                Token.EQ => ExitEq((GrammaticaToken)node),
+                Token.LT => ExitLt((GrammaticaToken)node),
+                Token.GT => ExitGt((GrammaticaToken)node),
+                Token.LTE => ExitLte((GrammaticaToken)node),
+                Token.GTE => ExitGte((GrammaticaToken)node),
+                Token.NE => ExitNe((GrammaticaToken)node),
+                Token.AND => ExitAnd((GrammaticaToken)node),
+                Token.OR => ExitOr((GrammaticaToken)node),
+                Token.XOR => ExitXor((GrammaticaToken)node),
+                Token.NOT => ExitNot((GrammaticaToken)node),
+                Token.IN => ExitIn((GrammaticaToken)node),
+                Token.DOT => ExitDot((GrammaticaToken)node),
+                Token.ARGUMENT_SEPARATOR => ExitArgumentSeparator((GrammaticaToken)node),
+                Token.ARRAY_BRACES => ExitArrayBraces((GrammaticaToken)node),
+                Token.LEFT_SHIFT => ExitLeftShift((GrammaticaToken)node),
+                Token.RIGHT_SHIFT => ExitRightShift((GrammaticaToken)node),
+                Token.INTEGER => ExitInteger((GrammaticaToken)node),
+                Token.REAL => ExitReal((GrammaticaToken)node),
+                Token.STRING_LITERAL => ExitStringLiteral((GrammaticaToken)node),
+                Token.CHAR_LITERAL => ExitCharLiteral((GrammaticaToken)node),
+                Token.TRUE => ExitTrue((GrammaticaToken)node),
+                Token.FALSE => ExitFalse((GrammaticaToken)node),
+                Token.IDENTIFIER => ExitIdentifier((GrammaticaToken)node),
+                Token.HEX_LITERAL => ExitHexliteral((GrammaticaToken)node),
+                Token.NULL_LITERAL => ExitNullLiteral((GrammaticaToken)node),
+                Token.TIMESPAN => ExitTimeSpan((GrammaticaToken)node),
+                Token.DATETIME => ExitDatetime((GrammaticaToken)node),
+                Token.IF => ExitIf((GrammaticaToken)node),
+                Token.CAST => ExitCast((GrammaticaToken)node),
+                Token.EXPRESSION => ExitExpression((Production)node),
+                Token.XOR_EXPRESSION => ExitXorExpression((Production)node),
+                Token.OR_EXPRESSION => ExitOrExpression((Production)node),
+                Token.AND_EXPRESSION => ExitAndExpression((Production)node),
+                Token.NOT_EXPRESSION => ExitNotExpression((Production)node),
+                Token.IN_EXPRESSION => ExitInExpression((Production)node),
+                Token.IN_TARGET_EXPRESSION => ExitInTargetExpression((Production)node),
+                Token.IN_LIST_TARGET_EXPRESSION => ExitInListTargetExpression((Production)node),
+                Token.COMPARE_EXPRESSION => ExitCompareExpression((Production)node),
+                Token.SHIFT_EXPRESSION => ExitShiftExpression((Production)node),
+                Token.ADDITIVE_EXPRESSION => ExitAdditiveExpression((Production)node),
+                Token.MULTIPLICATIVE_EXPRESSION => ExitMultiplicativeExpression((Production)node),
+                Token.POWER_EXPRESSION => ExitPowerExpression((Production)node),
+                Token.NEGATE_EXPRESSION => ExitNegateExpression((Production)node),
+                Token.MEMBER_EXPRESSION => ExitMemberExpression((Production)node),
+                Token.MEMBER_ACCESS_EXPRESSION => ExitMemberAccessExpression((Production)node),
+                Token.BASIC_EXPRESSION => ExitBasicExpression((Production)node),
+                Token.MEMBER_FUNCTION_EXPRESSION => ExitMemberFunctionExpression((Production)node),
+                Token.FIELD_PROPERTY_EXPRESSION => ExitFieldPropertyExpression((Production)node),
+                Token.SPECIAL_FUNCTION_EXPRESSION => ExitSpecialFunctionExpression((Production)node),
+                Token.IF_EXPRESSION => ExitIfExpression((Production)node),
+                Token.CAST_EXPRESSION => ExitCastExpression((Production)node),
+                Token.CAST_TYPE_EXPRESSION => ExitCastTypeExpression((Production)node),
+                Token.INDEX_EXPRESSION => ExitIndexExpression((Production)node),
+                Token.FUNCTION_CALL_EXPRESSION => ExitFunctionCallExpression((Production)node),
+                Token.ARGUMENT_LIST => ExitArgumentList((Production)node),
+                Token.LITERAL_EXPRESSION => ExitLiteralExpression((Production)node),
+                Token.BOOLEAN_LITERAL_EXPRESSION => ExitBooleanLiteralExpression((Production)node),
+                Token.EXPRESSION_GROUP => ExitExpressionGroup((Production)node),
+                _ => node,
+            };
         }
 
         /// <summary>

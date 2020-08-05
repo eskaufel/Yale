@@ -101,8 +101,6 @@ namespace Yale.Expression.Elements.MemberElements
                 property = (PropertyInfo)members[0];
                 return true;
             }
-
-            return false;
         }
 
         private bool ResolveVirtualProperty(MemberElement previous)
@@ -329,7 +327,7 @@ namespace Yale.Expression.Elements.MemberElements
                     return propertyDescriptor.ComponentType;
                 }
 
-                return property != null ? property.ReflectedType : null;
+                return property?.ReflectedType;
             }
         }
 

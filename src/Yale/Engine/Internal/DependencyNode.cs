@@ -33,7 +33,7 @@ namespace Yale.Engine.Internal
         {
             get
             {
-                return dependents ?? (dependents = successors.Select(s => s.Key).ToArray());
+                return dependents ??= successors.Select(s => s.Key).ToArray();
             }
         }
 
@@ -43,7 +43,7 @@ namespace Yale.Engine.Internal
         {
             get
             {
-                return precedents ?? (precedents = predecessor.Select(s => s.Key).ToArray());
+                return precedents ??= predecessor.Select(s => s.Key).ToArray();
             }
         }
 

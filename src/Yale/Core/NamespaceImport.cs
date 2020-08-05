@@ -16,13 +16,13 @@ namespace Yale.Core
     /// </remarks>
     internal sealed class NamespaceImport : ImportBase, ICollection<ImportBase>
     {
-        private readonly string _namespace;
-        private readonly List<ImportBase> _imports;
+        private readonly string @namespace;
+        private readonly List<ImportBase> imports;
 
-        public override string Name => _namespace;
+        public override string Name => @namespace;
         public override bool IsContainer => true;
         public bool IsReadOnly => false;
-        public int Count => _imports.Count;
+        public int Count => imports.Count;
 
         /// <summary>
         /// Creates a new namespace import with a given namespace name
@@ -38,8 +38,8 @@ namespace Yale.Core
                 throw new ArgumentException(GeneralErrors.InvalidNamespaceName);
             }
 
-            _namespace = importNamespace;
-            _imports = new List<ImportBase>();
+            @namespace = importNamespace;
+            imports = new List<ImportBase>();
         }
 
         protected override void AddMembers(string memberName, MemberTypes memberType, ICollection<MemberInfo> targetCollection)
@@ -62,7 +62,7 @@ namespace Yale.Core
 
         internal override ImportBase? FindImport(string name)
         {
-            foreach (var import in _imports)
+            foreach (var import in imports)
             {
                 if (import.IsMatch(name))
                 {
@@ -74,7 +74,7 @@ namespace Yale.Core
 
         internal override bool IsMatch(string name)
         {
-            return string.Equals(_namespace, name, Options.MemberStringComparison);
+            return string.Equals(@namespace, name, Options.MemberStringComparison);
         }
 
         private ICollection<ImportBase> NonContainerImports
@@ -83,7 +83,7 @@ namespace Yale.Core
             {
                 var found = new List<ImportBase>();
 
-                foreach (var import in _imports)
+                foreach (var import in imports)
                 {
                     if (import.IsContainer == false)
                     {
@@ -97,38 +97,38 @@ namespace Yale.Core
         protected override bool EqualsInternal(ImportBase import)
         {
             return import is NamespaceImport otherSameType &&
-                   _namespace.Equals(otherSameType._namespace, Options.MemberStringComparison);
+                   @namespace.Equals(otherSameType.@namespace, Options.MemberStringComparison);
         }
 
         public void Add(ImportBase item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
-            _imports.Add(item);
+            imports.Add(item);
         }
 
         public void Clear()
         {
-            _imports.Clear();
+            imports.Clear();
         }
 
         public bool Contains(ImportBase item)
         {
-            return _imports.Contains(item);
+            return imports.Contains(item);
         }
 
         public void CopyTo(ImportBase[] array, int arrayIndex)
         {
-            _imports.CopyTo(array, arrayIndex);
+            imports.CopyTo(array, arrayIndex);
         }
 
         public bool Remove(ImportBase item)
         {
-            return _imports.Remove(item);
+            return imports.Remove(item);
         }
 
         public override IEnumerator<ImportBase> GetEnumerator()
         {
-            return _imports.GetEnumerator();
+            return imports.GetEnumerator();
         }
     }
 }

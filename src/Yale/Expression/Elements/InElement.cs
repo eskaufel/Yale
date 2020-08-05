@@ -125,7 +125,9 @@ namespace Yale.Expression.Elements
                 branchManager.GetLabel("trueTerminal", ilGenerator);
 
                 // Do a fake emit to get branch positions
-                var ilgTemp = CreateTempIlGenerator(ilGenerator);
+                var dynamicMethod = new DynamicMethod("temp", typeof(int), null, GetType());
+                var ilgTemp = new YaleIlGenerator(dynamicMethod.GetILGenerator(), ilGenerator.Length, true);
+
                 Utility.SyncFleeIlGeneratorLabels(ilGenerator, ilgTemp);
 
                 EmitListIn(ilgTemp, context, branchManager);

@@ -14,7 +14,7 @@ namespace Yale.Expression.Elements.Literals.Integral
             _myValue = value;
         }
 
-        public static UInt32LiteralElement TryCreate(string image, NumberStyles numberStyles)
+        public static UInt32LiteralElement? TryCreate(string image, NumberStyles numberStyles)
         {
             if (UInt32.TryParse(image, numberStyles, null, out var value))
             {

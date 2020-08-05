@@ -63,7 +63,7 @@ namespace Yale.Parser.Internal
         /// <param name="dest"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        private int CountLongBranches(ICollection<BranchInfo> dest)
+        private static int CountLongBranches(ICollection<BranchInfo> dest)
         {
             var count = 0;
 

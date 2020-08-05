@@ -6,11 +6,6 @@ namespace Yale.Expression
 {
     internal class ExpressionContext
     {
-        public ExpressionContext(string expressionName)
-        {
-            ExpressionName = expressionName;
-        }
-
         public ExpressionContext(ExpressionBuilderOptions builderOptions, string expressionName, object owner)
         {
             BuilderOptions = builderOptions;
