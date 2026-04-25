@@ -6,7 +6,7 @@ Yale is a **.NET 6.0 C# library** that compiles string expressions (e.g., `sqrt(
 
 ## Tech Stack
 
-- **Language:** C# on .NET 6.0
+- **Language:** C# on .NET 10.0
 - **Testing:** MSTest (`test/Yale.Tests/`)
 - **Benchmarking:** BenchmarkDotNet (`benchmark/Yale.Benchmarks/`)
 - **Formatter:** CSharpier (enforced via Husky pre-commit hook)

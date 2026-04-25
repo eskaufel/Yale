@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Yale is a .NET 6.0 expression parser and evaluator library. It compiles string expressions (e.g., `sqrt(a^2 + b^2)`, `name() = "Maria"`) to Common Intermediate Language (CIL) for fast runtime evaluation. It is a modernization of the [Flee](https://github.com/mparlak/Flee) library. Licensed under LGPL-3.0.
+Yale is a .NET 10.0 expression parser and evaluator library. It compiles string expressions (e.g., `sqrt(a^2 + b^2)`, `name() = "Maria"`) to Common Intermediate Language (CIL) for fast runtime evaluation. It is a modernization of the [Flee](https://github.com/mparlak/Flee) library. Licensed under LGPL-3.0.
 
 ## Repository Structure
 
