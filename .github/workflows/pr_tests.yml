@@ -8,6 +8,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      CICD: "0"
 
     steps:
       - name: Checkout code
@@ -16,7 +18,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '6.x'
+          dotnet-version: '8.x'
 
       - name: Restore
         run: dotnet restore
