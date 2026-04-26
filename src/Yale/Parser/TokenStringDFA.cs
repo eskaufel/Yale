@@ -44,7 +44,7 @@ internal sealed class TokenStringDFA
     public void AddMatch(string str, bool caseInsensitive, TokenPattern value)
     {
         DFAState state;
-        DFAState next;
+        DFAState? next;
         var c = str[0];
         var start = 0;
 
@@ -91,9 +91,9 @@ internal sealed class TokenStringDFA
      *
      * @throws IOException if an I/O error occurred
      */
-    public TokenPattern Match(ReaderBuffer buffer, bool caseInsensitive)
+    public TokenPattern? Match(ReaderBuffer buffer, bool caseInsensitive)
     {
-        TokenPattern result = null;
+        TokenPattern? result = null;
         DFAState state;
         var pos = 0;
         int c;
@@ -126,12 +126,13 @@ internal sealed class TokenStringDFA
         }
         while ((c = buffer.Peek(pos)) >= 0)
         {
-            state = state.tree.Find((char)c, caseInsensitive);
-            if (state == null)
+            next = state.tree.Find((char)c, caseInsensitive);
+            if (next == null)
             {
                 break;
             }
-            else if (state.value != null)
+            state = next;
+            if (state.value != null)
             {
                 result = state.value;
             }

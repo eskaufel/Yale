@@ -155,7 +155,7 @@ internal sealed class IdentifierElement : MemberElement
         }
         else
         {
-            EmitPropertyLoad(property, ilGenerator);
+            EmitPropertyLoad(property!, ilGenerator);
         }
     }
 
@@ -177,7 +177,7 @@ internal sealed class IdentifierElement : MemberElement
         {
             EmitLoadVariables(ilg);
         }
-        else if (Context.OwnerType.IsAssignableFrom(MemberOwnerType) & IsStatic == false)
+        else if (Context.OwnerType?.IsAssignableFrom(MemberOwnerType) == true & IsStatic == false)
         {
             EmitLoadOwner(ilg);
         }
@@ -189,7 +189,7 @@ internal sealed class IdentifierElement : MemberElement
     /// <param name="ilg"></param>
     private void EmitVariableLoad(YaleIlGenerator ilg)
     {
-        var methodInfo = VariableCollection.GetVariableLoadMethod(valueType);
+        var methodInfo = VariableCollection.GetVariableLoadMethod(valueType!);
         ilg.Emit(OpCodes.Ldstr, MemberName);
         EmitMethodCall(methodInfo, ilg);
     }
@@ -240,7 +240,7 @@ internal sealed class IdentifierElement : MemberElement
     private static void EmitLiteral(FieldInfo fi, YaleIlGenerator ilg, ExpressionContext context)
     {
         var value = fi.GetValue(null);
-        var type = value.GetType();
+        var type = value!.GetType();
         var typeCode = Type.GetTypeCode(type);
         LiteralElement? elem;
 
@@ -400,7 +400,7 @@ internal sealed class IdentifierElement : MemberElement
                 return false;
             }
 
-            if (Context.OwnerType.IsAssignableFrom(MemberOwnerType) && Previous is null)
+            if (Context.OwnerType?.IsAssignableFrom(MemberOwnerType) == true && Previous is null)
             {
                 // Owner members support static if we are the first element
                 return true;
@@ -427,7 +427,7 @@ internal sealed class IdentifierElement : MemberElement
                 return true;
             }
 
-            if (Context.OwnerType.IsAssignableFrom(MemberOwnerType) && Previous is null)
+            if (Context.OwnerType?.IsAssignableFrom(MemberOwnerType) == true && Previous is null)
             {
                 // Owner members support instance if we are the first element
                 return true;
