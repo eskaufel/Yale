@@ -56,7 +56,7 @@ public class ExpressionBuilderOptions : IExpressionOptions
     //Todo:Verify
     private static void AssertNestedTypeIsAccessible(Type type)
     {
-        var typeInternal = type;
+        Type? typeInternal = type;
         do
         {
             AssertTypeIsAccessibleInternal(typeInternal);

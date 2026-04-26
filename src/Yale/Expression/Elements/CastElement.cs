@@ -246,7 +246,7 @@ internal sealed class CastElement : BaseExpressionElement
 
     private static bool IsBaseType(Type target, Type potentialBase)
     {
-        var current = target;
+        Type? current = target;
         while (current is not null)
         {
             if (ReferenceEquals(current, potentialBase))

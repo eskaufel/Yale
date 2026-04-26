@@ -16,7 +16,7 @@ internal sealed class InElement : BaseExpressionElement
     private readonly BaseExpressionElement targetCollectionElement;
 
     // Type of the collection
-    private Type targetCollectionType;
+    private Type? targetCollectionType;
 
     // Initialize for searching a list of values
     public InElement(BaseExpressionElement operand, IList listElements)
@@ -85,7 +85,7 @@ internal sealed class InElement : BaseExpressionElement
         }
     }
 
-    private Type GetTargetCollectionType()
+    private Type? GetTargetCollectionType()
     {
         var collType = targetCollectionElement.ResultType;
 
@@ -188,7 +188,7 @@ internal sealed class InElement : BaseExpressionElement
         return targetCollectionType.GetMethod(
             methodName,
             BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase
-        );
+        )!;
     }
 
     private void EmitListIn(

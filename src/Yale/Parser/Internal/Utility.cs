@@ -339,7 +339,7 @@ internal static class Utility
                 "code_len",
                 BindingFlags.Instance | BindingFlags.NonPublic
             );
-        return fi != null ? (int)fi.GetValue(ilg) : -1;
+        return fi != null ? (int)fi.GetValue(ilg)! : -1;
     }
 
     public static bool IsLongBranch(int startPosition, int endPosition) =>

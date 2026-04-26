@@ -144,13 +144,13 @@ internal abstract class MemberElement : BaseExpressionElement
             if (IsGetTypeMethod(mi))
             {
                 // Special GetType method which requires a box
-                ilg.Emit(OpCodes.Box, mi.ReflectedType);
+                ilg.Emit(OpCodes.Box, mi.ReflectedType!);
                 ilg.Emit(OpCodes.Call, mi);
             }
             else
             {
                 // Equals, GetHashCode, and ToString methods on the base
-                ilg.Emit(OpCodes.Constrained, mi.ReflectedType);
+                ilg.Emit(OpCodes.Constrained, mi.ReflectedType!);
                 ilg.Emit(OpCodes.Callvirt, mi);
             }
         }

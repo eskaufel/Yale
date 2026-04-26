@@ -108,7 +108,7 @@ internal sealed class CompareElement : BinaryExpressionElement
 
             default:
                 Debug.Assert(false, "unknown compare type");
-                return null;
+                return null!;
         }
     }
 
@@ -183,7 +183,7 @@ internal sealed class CompareElement : BinaryExpressionElement
             new[] { typeof(string), typeof(string), typeof(StringComparison) },
             null
         );
-        ilg.Emit(OpCodes.Call, methodInfo);
+        ilg.Emit(OpCodes.Call, methodInfo!);
 
         if (op == LogicalCompareOperation.NotEqual)
         {
