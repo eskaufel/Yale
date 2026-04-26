@@ -1,0 +1,47 @@
+name: PR Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      CICD: "0"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: |
+          dotnet test --configuration Release --no-build --no-restore \
+            --logger "trx;LogFileName=results.trx" || TEST_EXIT=$?
+          if [ -f results.trx ]; then
+            python3 - <<'PYEOF' >> $GITHUB_STEP_SUMMARY
+          import xml.etree.ElementTree as ET
+          tree = ET.parse('results.trx')
+          ns = {'t': 'http://microsoft.com/schemas/VisualStudio/TeamTest/2010'}
+          print('## Failed Tests\n')
+          for r in tree.findall('.//t:UnitTestResult[@outcome="Failed"]', ns):
+              print(f"**{r.attrib.get('testName')}**\n")
+              msg = r.find('.//t:Message', ns)
+              st  = r.find('.//t:StackTrace', ns)
+              if msg is not None: print(f"```\n{msg.text}\n```\n")
+              if st  is not None: print(f"```\n{st.text}\n```\n")
+          PYEOF
+          fi
+          exit ${TEST_EXIT:-0}
