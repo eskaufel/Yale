@@ -272,7 +272,7 @@ internal class Tokenizer
      * @throws ParseException if the input stream couldn't be read or
      *             parsed correctly
      */
-    private Token NextToken()
+    private Token? NextToken()
     {
         string str;
         int line;
@@ -289,7 +289,7 @@ internal class Tokenizer
                 line = buffer.LineNumber;
                 column = buffer.ColumnNumber;
                 str = buffer.Read(lastMatch.Length);
-                return NewToken(lastMatch.Pattern, str, line, column);
+                return NewToken(lastMatch.Pattern!, str, line, column);
             }
             else if (buffer.Peek(0) < 0)
             {
