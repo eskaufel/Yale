@@ -27,4 +27,4 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test --configuration Release --no-build --no-restore --logger "console;verbosity=detailed"
+        run: dotnet test --configuration Release --no-build --no-restore --logger "GitHubActions;verbosity=detailed"
