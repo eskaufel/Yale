@@ -291,7 +291,7 @@ internal sealed class FunctionCallElement : MemberElement
     )
     {
         // Get the fixed parameters
-        var fixedParameters = new ParameterInfo[targetMethodInfo.FixedArgTypes.Length];
+        var fixedParameters = new ParameterInfo[targetMethodInfo.FixedArgTypes!.Length];
         Array.Copy(parameters, fixedParameters, fixedParameters.Length);
 
         // Get the corresponding fixed parameters

@@ -78,11 +78,11 @@ internal sealed class CustomMethodInfo : IComparable<CustomMethodInfo>, IEquatab
 
         Array.Copy(parameters, fixedParameters, fixedParameterCount);
 
-        var fixedSum = ComputeSum(fixedParameters, FixedArgTypes);
+        var fixedSum = ComputeSum(fixedParameters, FixedArgTypes!);
         var paramArrayElementType = paramArrayParameter.ParameterType.GetElementType()!;
         var paramArraySum = 0;
 
-        foreach (var argType in ParamArrayArgTypes)
+        foreach (var argType in ParamArrayArgTypes!)
         {
             paramArraySum += ImplicitConverter.GetImplicitConvertScore(
                 argType,
