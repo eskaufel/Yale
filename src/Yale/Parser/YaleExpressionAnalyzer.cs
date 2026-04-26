@@ -357,7 +357,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
 
     public override Token ExitReal(Token token)
     {
-        var element = RealLiteralElement.Create(token.Image, context.BuilderOptions);
+        var element = RealLiteralElement.Create(token.Image, context!.BuilderOptions);
 
         token.Values.Add(element);
         return token;
@@ -369,7 +369,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
             token.Image,
             false,
             inUnaryNegate,
-            context.BuilderOptions
+            context!.BuilderOptions
         );
         token.Values.Add(element);
         return token;
@@ -381,7 +381,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
             token.Image,
             true,
             inUnaryNegate,
-            context.BuilderOptions
+            context!.BuilderOptions
         );
         token.Values.Add(element);
         return token;
