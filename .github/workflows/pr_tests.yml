@@ -29,11 +29,19 @@ jobs:
       - name: Test
         run: |
           dotnet test --configuration Release --no-build --no-restore \
-            --logger "trx;LogFileName=results.trx" \
-            --logger "console;verbosity=normal" || TEST_EXIT=$?
+            --logger "trx;LogFileName=results.trx" || TEST_EXIT=$?
           if [ -f results.trx ]; then
-            echo "## Failed Tests" >> $GITHUB_STEP_SUMMARY
-            grep -E '<UnitTestResult|<Message|<StackTrace' results.trx \
-              | grep -A2 'outcome="Failed"' >> $GITHUB_STEP_SUMMARY || true
+            python3 - <<'PYEOF' >> $GITHUB_STEP_SUMMARY
+          import xml.etree.ElementTree as ET
+          tree = ET.parse('results.trx')
+          ns = {'t': 'http://microsoft.com/schemas/VisualStudio/TeamTest/2010'}
+          print('## Failed Tests\n')
+          for r in tree.findall('.//t:UnitTestResult[@outcome="Failed"]', ns):
+              print(f"**{r.attrib.get('testName')}**\n")
+              msg = r.find('.//t:Message', ns)
+              st  = r.find('.//t:StackTrace', ns)
+              if msg is not None: print(f"```\n{msg.text}\n```\n")
+              if st  is not None: print(f"```\n{st.text}\n```\n")
+          PYEOF
           fi
           exit ${TEST_EXIT:-0}
