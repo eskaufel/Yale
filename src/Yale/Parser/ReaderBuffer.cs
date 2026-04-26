@@ -198,7 +198,7 @@ internal sealed class ReaderBuffer
      *
      * @throws IOException if an I/O error occurred
      */
-    public string Read(int offset)
+    public string? Read(int offset)
     {
         int count;
         string result;

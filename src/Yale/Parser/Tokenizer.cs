@@ -288,7 +288,7 @@ internal class Tokenizer
             {
                 line = buffer.LineNumber;
                 column = buffer.ColumnNumber;
-                str = buffer.Read(lastMatch.Length);
+                str = buffer.Read(lastMatch.Length)!;
                 return NewToken(lastMatch.Pattern!, str, line, column);
             }
             else if (buffer.Peek(0) < 0)

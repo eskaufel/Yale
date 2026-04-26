@@ -10,10 +10,10 @@ internal sealed class InElement : BaseExpressionElement
     private readonly BaseExpressionElement operand;
 
     // Elements we will compare against
-    private readonly List<BaseExpressionElement> arguments;
+    private readonly List<BaseExpressionElement> arguments = default!;
 
     // Collection to look in
-    private readonly BaseExpressionElement targetCollectionElement;
+    private readonly BaseExpressionElement targetCollectionElement = default!;
 
     // Type of the collection
     private Type? targetCollectionType;
