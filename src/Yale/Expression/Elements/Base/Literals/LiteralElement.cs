@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using Yale.Parser.Internal;
 using Yale.Resources;
 
@@ -7,7 +6,6 @@ namespace Yale.Expression.Elements.Base.Literals;
 
 internal abstract class LiteralElement : BaseExpressionElement
 {
-    [DoesNotReturn]
     protected void OnParseOverflow(string image)
     {
         throw CreateCompileException(

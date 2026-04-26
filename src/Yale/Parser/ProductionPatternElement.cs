@@ -108,7 +108,10 @@ internal sealed class ProductionPatternElement
         }
     }
 
-    public override int GetHashCode() => (int)Id * 37;
+    //public override int GetHashCode()
+    //{
+    //    return Id * 37;
+    //}
 
     public override string ToString()
     {

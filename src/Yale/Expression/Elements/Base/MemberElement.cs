@@ -10,28 +10,28 @@ internal abstract class MemberElement : BaseExpressionElement
     /// <summary>
     /// Previous is the user part of the expression user.address [previous.next]
     /// </summary>
-    protected MemberElement? Previous;
+    protected MemberElement Previous;
 
     /// <summary>
     /// Next is the address part of the expression user.address [previous.next]
     /// </summary>
-    protected MemberElement? Next;
+    protected MemberElement Next;
 
-    protected ExpressionContext Context = default!;
-    protected ImportBase? Import;
+    protected ExpressionContext Context;
+    protected ImportBase Import;
     public ImportCollection Imports => Context.Imports;
     public VariableCollection Variables => Context.Variables;
 
     public const BindingFlags BindFlags =
         BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
 
-    public string MemberName { get; protected set; } = default!;
+    public string MemberName { get; protected set; }
 
     protected MemberElement() { }
 
     protected MemberElement(string name) => MemberName = name;
 
-    public void Link(MemberElement? nextElement)
+    public void Link(MemberElement nextElement)
     {
         Next = nextElement;
         if (nextElement is not null)
@@ -144,13 +144,13 @@ internal abstract class MemberElement : BaseExpressionElement
             if (IsGetTypeMethod(mi))
             {
                 // Special GetType method which requires a box
-                ilg.Emit(OpCodes.Box, mi.ReflectedType!);
+                ilg.Emit(OpCodes.Box, mi.ReflectedType);
                 ilg.Emit(OpCodes.Call, mi);
             }
             else
             {
                 // Equals, GetHashCode, and ToString methods on the base
-                ilg.Emit(OpCodes.Constrained, mi.ReflectedType!);
+                ilg.Emit(OpCodes.Constrained, mi.ReflectedType);
                 ilg.Emit(OpCodes.Callvirt, mi);
             }
         }
@@ -175,7 +175,7 @@ internal abstract class MemberElement : BaseExpressionElement
     {
         ilg.Emit(OpCodes.Ldarg_0);
 
-        var ownerType = Context.OwnerType!;
+        var ownerType = Context.OwnerType;
 
         if (ownerType.IsValueType == false)
         {

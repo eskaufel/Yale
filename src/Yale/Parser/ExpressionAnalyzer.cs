@@ -557,10 +557,8 @@ internal class ExpressionAnalyzer : Analyzer
     /// </summary>
     /// <param name="production"></param>
     /// <param name="child"></param>
-    public override void Child(Production production, Node? child)
+    public override void Child(Production production, Node child)
     {
-        if (child is null)
-            return;
         switch (production.TypeId)
         {
             case TokenId.EXPRESSION:

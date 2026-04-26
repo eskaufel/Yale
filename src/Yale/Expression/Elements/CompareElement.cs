@@ -78,7 +78,7 @@ internal sealed class CompareElement : BinaryExpressionElement
         return null;
     }
 
-    private MethodInfo? GetOverloadedCompareOperator()
+    private MethodInfo GetOverloadedCompareOperator()
     {
         var name = GetCompareOperatorName(operation);
         return GetOverloadedBinaryOperator(name, operation);
@@ -108,7 +108,7 @@ internal sealed class CompareElement : BinaryExpressionElement
 
             default:
                 Debug.Assert(false, "unknown compare type");
-                return null!;
+                return null;
         }
     }
 
@@ -183,7 +183,7 @@ internal sealed class CompareElement : BinaryExpressionElement
             new[] { typeof(string), typeof(string), typeof(StringComparison) },
             null
         );
-        ilg.Emit(OpCodes.Call, methodInfo!);
+        ilg.Emit(OpCodes.Call, methodInfo);
 
         if (op == LogicalCompareOperation.NotEqual)
         {

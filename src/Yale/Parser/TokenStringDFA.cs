@@ -18,7 +18,7 @@ internal sealed class TokenStringDFA
      * character. This array is used to for speed optimizing the
      * first step in the match.
      */
-    private DFAState?[] ascii = new DFAState?[128];
+    private DFAState[] ascii = new DFAState[128];
 
     /**
      * The automaton state transition tree for non-ASCII characters.
@@ -43,8 +43,8 @@ internal sealed class TokenStringDFA
      */
     public void AddMatch(string str, bool caseInsensitive, TokenPattern value)
     {
-        DFAState? state;
-        DFAState? next;
+        DFAState state;
+        DFAState next;
         var c = str[0];
         var start = 0;
 
@@ -64,7 +64,7 @@ internal sealed class TokenStringDFA
         }
         for (var i = start; i < str.Length; i++)
         {
-            next = state!.tree.Find(str[i], caseInsensitive);
+            next = state.tree.Find(str[i], caseInsensitive);
             if (next == null)
             {
                 next = new DFAState();
@@ -72,7 +72,7 @@ internal sealed class TokenStringDFA
             }
             state = next;
         }
-        state!.value = value;
+        state.value = value;
     }
 
     /**
@@ -91,10 +91,10 @@ internal sealed class TokenStringDFA
      *
      * @throws IOException if an I/O error occurred
      */
-    public TokenPattern? Match(ReaderBuffer buffer, bool caseInsensitive)
+    public TokenPattern Match(ReaderBuffer buffer, bool caseInsensitive)
     {
-        TokenPattern? result = null;
-        DFAState? state;
+        TokenPattern result = null;
+        DFAState state;
         var pos = 0;
         int c;
 
@@ -126,13 +126,12 @@ internal sealed class TokenStringDFA
         }
         while ((c = buffer.Peek(pos)) >= 0)
         {
-            var next = state!.tree.Find((char)c, caseInsensitive);
-            if (next == null)
+            state = state.tree.Find((char)c, caseInsensitive);
+            if (state == null)
             {
                 break;
             }
-            state = next;
-            if (state!.value != null)
+            else if (state.value != null)
             {
                 result = state.value;
             }
@@ -155,13 +154,13 @@ internal sealed class TokenStringDFA
             if (ascii[i] != null)
             {
                 buffer.Append((char)i);
-                if (ascii[i]!.value != null)
+                if (ascii[i].value != null)
                 {
                     buffer.Append(": ");
-                    buffer.Append(ascii[i]!.value);
+                    buffer.Append(ascii[i].value);
                     buffer.Append('\n');
                 }
-                ascii[i]!.tree.PrintTo(buffer, " ");
+                ascii[i].tree.PrintTo(buffer, " ");
             }
         }
         nonAscii.tree.PrintTo(buffer, "");

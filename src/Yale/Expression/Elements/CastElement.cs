@@ -201,8 +201,8 @@ internal sealed class CastElement : BaseExpressionElement
                 return false;
             }
 
-            var sourceElementType = sourceType.GetElementType()!;
-            var destElementType = destType.GetElementType()!;
+            var sourceElementType = sourceType.GetElementType();
+            var destElementType = destType.GetElementType();
 
             // Both SE and TE are reference-types
             if (sourceElementType.IsValueType | destElementType.IsValueType)
@@ -246,7 +246,7 @@ internal sealed class CastElement : BaseExpressionElement
 
     private static bool IsBaseType(Type target, Type potentialBase)
     {
-        Type? current = target;
+        var current = target;
         while (current is not null)
         {
             if (ReferenceEquals(current, potentialBase))
@@ -284,7 +284,7 @@ internal sealed class CastElement : BaseExpressionElement
         castExpression.Emit(ilGenerator, context);
 
         var sourceType = castExpression.ResultType;
-        var destType = this.destType!;
+        var destType = this.destType;
 
         EmitCast(ilGenerator, sourceType, destType, context);
     }
@@ -538,5 +538,5 @@ internal sealed class CastElement : BaseExpressionElement
         }
     }
 
-    public override Type ResultType => destType!;
+    public override Type ResultType => destType;
 }

@@ -528,7 +528,7 @@ internal sealed class ImplicitConverter
     private static int GetInheritanceDistance(Type sourceType, Type destinationType)
     {
         var count = 0;
-        Type? current = sourceType;
+        var current = sourceType;
 
         while (current is not null && (ReferenceEquals(current, destinationType) == false))
         {

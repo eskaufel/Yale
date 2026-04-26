@@ -13,7 +13,7 @@ internal sealed class Int64LiteralElement : IntegralLiteralElement
 
     private Int64LiteralElement() => _isMinValue = true;
 
-    public static Int64LiteralElement? TryCreate(string image, bool isHex, bool negated)
+    public static Int64LiteralElement TryCreate(string image, bool isHex, bool negated)
     {
         if (negated & image == MinValue)
         {

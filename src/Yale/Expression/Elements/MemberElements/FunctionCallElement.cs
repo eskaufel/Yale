@@ -9,9 +9,9 @@ namespace Yale.Expression.Elements.MemberElements;
 internal sealed class FunctionCallElement : MemberElement
 {
     private readonly ArgumentList arguments;
-    private readonly ICollection<MethodInfo>? methods;
+    private readonly ICollection<MethodInfo> methods;
 
-    private CustomMethodInfo targetMethodInfo = default!;
+    private CustomMethodInfo targetMethodInfo;
 
     public FunctionCallElement(string name, ArgumentList arguments)
         : base(name) => this.arguments = arguments;
@@ -59,7 +59,7 @@ internal sealed class FunctionCallElement : MemberElement
         ThrowFunctionNotFoundException(Previous);
     }
 
-    private void ThrowFunctionNotFoundException(MemberElement? previous)
+    private void ThrowFunctionNotFoundException(MemberElement previous)
     {
         if (previous is null)
         {
@@ -82,7 +82,7 @@ internal sealed class FunctionCallElement : MemberElement
         }
     }
 
-    private void ThrowNoAccessibleMethodsException(MemberElement? previous)
+    private void ThrowNoAccessibleMethodsException(MemberElement previous)
     {
         if (previous is null)
         {
@@ -123,7 +123,7 @@ internal sealed class FunctionCallElement : MemberElement
     /// <param name="argTypes"></param>
     private void BindToMethod(
         ICollection<MethodInfo> methods,
-        MemberElement? previous,
+        MemberElement previous,
         Type[] argTypes
     )
     {
@@ -168,7 +168,7 @@ internal sealed class FunctionCallElement : MemberElement
     /// <param name="argTypes"></param>
     private void ResolveOverloads(
         CustomMethodInfo[] customInfoArray,
-        MemberElement? previous,
+        MemberElement previous,
         Type[] argTypes
     )
     {
@@ -271,7 +271,7 @@ internal sealed class FunctionCallElement : MemberElement
         //    return;
         //}
 
-        var isOwnerMember = Context.OwnerType?.IsAssignableFrom(Method.ReflectedType) == true;
+        var isOwnerMember = Context.OwnerType.IsAssignableFrom(Method.ReflectedType);
 
         // Load the owner if required
         if (Previous is null && isOwnerMember && IsStatic == false)
@@ -291,7 +291,7 @@ internal sealed class FunctionCallElement : MemberElement
     )
     {
         // Get the fixed parameters
-        var fixedParameters = new ParameterInfo[targetMethodInfo.FixedArgTypes!.Length];
+        var fixedParameters = new ParameterInfo[targetMethodInfo.FixedArgTypes.Length];
         Array.Copy(parameters, fixedParameters, fixedParameters.Length);
 
         // Get the corresponding fixed parameters
@@ -314,7 +314,7 @@ internal sealed class FunctionCallElement : MemberElement
         // Emit them into an array
         EmitElementArrayLoad(
             paramArrayElements,
-            targetMethodInfo.ParamArrayElementType!,
+            targetMethodInfo.ParamArrayElementType,
             ilGenerator,
             context
         );

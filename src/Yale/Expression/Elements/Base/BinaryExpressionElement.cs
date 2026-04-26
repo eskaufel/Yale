@@ -9,8 +9,8 @@ namespace Yale.Expression.Elements.Base;
 /// </summary>
 internal abstract class BinaryExpressionElement : BaseExpressionElement
 {
-    protected BaseExpressionElement LeftChild = default!;
-    protected BaseExpressionElement RightChild = default!;
+    protected BaseExpressionElement? LeftChild;
+    protected BaseExpressionElement? RightChild;
     private Type? resultType;
 
     /// <summary>
@@ -174,5 +174,5 @@ internal abstract class BinaryExpressionElement : BaseExpressionElement
         ValidateInternal(op);
     }
 
-    public sealed override Type ResultType => resultType!;
+    public sealed override Type ResultType => resultType;
 }

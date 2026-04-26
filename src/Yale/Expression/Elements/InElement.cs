@@ -10,13 +10,13 @@ internal sealed class InElement : BaseExpressionElement
     private readonly BaseExpressionElement operand;
 
     // Elements we will compare against
-    private readonly List<BaseExpressionElement> arguments = default!;
+    private readonly List<BaseExpressionElement> arguments;
 
     // Collection to look in
-    private readonly BaseExpressionElement targetCollectionElement = default!;
+    private readonly BaseExpressionElement targetCollectionElement;
 
     // Type of the collection
-    private Type? targetCollectionType;
+    private Type targetCollectionType;
 
     // Initialize for searching a list of values
     public InElement(BaseExpressionElement operand, IList listElements)
@@ -85,7 +85,7 @@ internal sealed class InElement : BaseExpressionElement
         }
     }
 
-    private Type? GetTargetCollectionType()
+    private Type GetTargetCollectionType()
     {
         var collType = targetCollectionElement.ResultType;
 
@@ -175,7 +175,7 @@ internal sealed class InElement : BaseExpressionElement
         var methodName = "Contains";
 
         if (
-            targetCollectionType!.IsGenericType
+            targetCollectionType.IsGenericType
             && ReferenceEquals(
                 targetCollectionType.GetGenericTypeDefinition(),
                 typeof(IDictionary<,>)
@@ -188,7 +188,7 @@ internal sealed class InElement : BaseExpressionElement
         return targetCollectionType.GetMethod(
             methodName,
             BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase
-        )!;
+        );
     }
 
     private void EmitListIn(

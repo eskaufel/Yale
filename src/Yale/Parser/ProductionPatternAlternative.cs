@@ -93,7 +93,7 @@ internal sealed class ProductionPatternAlternative
         for (var i = 0; i < elements.Count; i++)
         {
             var elem = elements[i];
-            if (elem.Id == Pattern!.Id)
+            if (elem.Id == Pattern.Id)
             {
                 return true;
             }
@@ -118,7 +118,7 @@ internal sealed class ProductionPatternAlternative
         for (var i = elements.Count - 1; i >= 0; i--)
         {
             var elem = elements[i];
-            if (elem.Id == Pattern!.Id)
+            if (elem.Id == Pattern.Id)
             {
                 return true;
             }

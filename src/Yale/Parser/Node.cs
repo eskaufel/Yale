@@ -86,7 +86,7 @@ internal abstract class Node
 
         for (var i = 0; i < Count; i++)
         {
-            count += 1 + this[i]!.GetDescendantCount();
+            count += 1 + this[i].GetDescendantCount();
         }
         return count;
     }

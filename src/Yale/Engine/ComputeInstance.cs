@@ -300,7 +300,7 @@ public class ComputeInstance
             nameof(ExpressionContext.ComputeInstance)
         );
 
-        ilGenerator.Emit(OpCodes.Callvirt, propertyInfo!.GetGetMethod()!);
+        ilGenerator.Emit(OpCodes.Callvirt, propertyInfo.GetGetMethod());
 
         //Find and load expression result
         var members = typeof(ComputeInstance).FindMembers(
@@ -311,7 +311,7 @@ public class ComputeInstance
         );
         var methodInfo = members.Cast<MethodInfo>().First(method => method.IsGenericMethod);
         var resultType = ResultType(expressionKey);
-        methodInfo = methodInfo.MakeGenericMethod(resultType!);
+        methodInfo = methodInfo.MakeGenericMethod(resultType);
 
         ilGenerator.Emit(OpCodes.Ldstr, expressionKey);
         ilGenerator.Emit(OpCodes.Call, methodInfo);

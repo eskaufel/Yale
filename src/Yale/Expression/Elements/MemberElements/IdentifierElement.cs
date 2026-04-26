@@ -15,14 +15,14 @@ namespace Yale.Expression.Elements.MemberElements;
 internal sealed class IdentifierElement : MemberElement
 {
     private FieldInfo? field;
-    private PropertyInfo? property;
-    private PropertyDescriptor? propertyDescriptor;
+    private PropertyInfo property;
+    private PropertyDescriptor propertyDescriptor;
 
     //A value from the value collection
-    private Type? valueType;
+    private Type valueType;
 
     //Another expression
-    private Type? calcEngineReferenceType;
+    private Type calcEngineReferenceType;
 
     public IdentifierElement(string name)
         : base(name) { }
@@ -71,7 +71,7 @@ internal sealed class IdentifierElement : MemberElement
         }
     }
 
-    private bool ResolveFieldProperty(MemberElement? previous)
+    private bool ResolveFieldProperty(MemberElement previous)
     {
         var allMembers = GetMembers(MemberTypes.Field | MemberTypes.Property);
         var members = GetAccessibleMembers(allMembers);
@@ -118,7 +118,7 @@ internal sealed class IdentifierElement : MemberElement
         }
     }
 
-    private bool ResolveVirtualProperty(MemberElement? previous)
+    private bool ResolveVirtualProperty(MemberElement previous)
     {
         if (previous is null)
         {
@@ -155,7 +155,7 @@ internal sealed class IdentifierElement : MemberElement
         }
         else
         {
-            EmitPropertyLoad(property!, ilGenerator);
+            EmitPropertyLoad(property, ilGenerator);
         }
     }
 
@@ -177,7 +177,7 @@ internal sealed class IdentifierElement : MemberElement
         {
             EmitLoadVariables(ilg);
         }
-        else if (Context.OwnerType?.IsAssignableFrom(MemberOwnerType) == true & IsStatic == false)
+        else if (Context.OwnerType.IsAssignableFrom(MemberOwnerType) & IsStatic == false)
         {
             EmitLoadOwner(ilg);
         }
@@ -189,7 +189,7 @@ internal sealed class IdentifierElement : MemberElement
     /// <param name="ilg"></param>
     private void EmitVariableLoad(YaleIlGenerator ilg)
     {
-        var methodInfo = VariableCollection.GetVariableLoadMethod(valueType!);
+        var methodInfo = VariableCollection.GetVariableLoadMethod(valueType);
         ilg.Emit(OpCodes.Ldstr, MemberName);
         EmitMethodCall(methodInfo, ilg);
     }
@@ -240,7 +240,7 @@ internal sealed class IdentifierElement : MemberElement
     private static void EmitLiteral(FieldInfo fi, YaleIlGenerator ilg, ExpressionContext context)
     {
         var value = fi.GetValue(null);
-        var type = value!.GetType();
+        var type = value.GetType();
         var typeCode = Type.GetTypeCode(type);
         LiteralElement? elem;
 
@@ -289,12 +289,12 @@ internal sealed class IdentifierElement : MemberElement
                 break;
         }
 
-        elem!.Emit(ilg, context);
+        elem.Emit(ilg, context);
     }
 
     private void EmitPropertyLoad(PropertyInfo pi, YaleIlGenerator ilg)
     {
-        var getter = pi.GetGetMethod(true)!;
+        var getter = pi.GetGetMethod(true);
         EmitMethodCall(getter, ilg);
     }
 
@@ -312,7 +312,7 @@ internal sealed class IdentifierElement : MemberElement
         {
             if (field is not null)
             {
-                return field.ReflectedType!;
+                return field.ReflectedType;
             }
 
             if (propertyDescriptor is not null)
@@ -320,7 +320,7 @@ internal sealed class IdentifierElement : MemberElement
                 return propertyDescriptor.ComponentType;
             }
 
-            return property!.ReflectedType!;
+            return property?.ReflectedType;
         }
     }
 
@@ -348,7 +348,7 @@ internal sealed class IdentifierElement : MemberElement
                 return field.FieldType;
             }
 
-            var methodInfo = property!.GetGetMethod(true)!;
+            var methodInfo = property.GetGetMethod(true);
             return methodInfo.ReturnType;
         }
     }
@@ -379,7 +379,7 @@ internal sealed class IdentifierElement : MemberElement
                 return field.IsPublic;
             }
 
-            var methodInfo = property!.GetGetMethod(true)!;
+            var methodInfo = property.GetGetMethod(true);
             return methodInfo.IsPublic;
         }
     }
@@ -400,7 +400,7 @@ internal sealed class IdentifierElement : MemberElement
                 return false;
             }
 
-            if (Context.OwnerType?.IsAssignableFrom(MemberOwnerType) == true && Previous is null)
+            if (Context.OwnerType.IsAssignableFrom(MemberOwnerType) && Previous is null)
             {
                 // Owner members support static if we are the first element
                 return true;
@@ -427,7 +427,7 @@ internal sealed class IdentifierElement : MemberElement
                 return true;
             }
 
-            if (Context.OwnerType?.IsAssignableFrom(MemberOwnerType) == true && Previous is null)
+            if (Context.OwnerType.IsAssignableFrom(MemberOwnerType) && Previous is null)
             {
                 // Owner members support instance if we are the first element
                 return true;
@@ -462,7 +462,7 @@ internal sealed class IdentifierElement : MemberElement
                 return false;
             }
 
-            var methodInfo = property!.GetGetMethod(true)!;
+            var methodInfo = property.GetGetMethod(true);
             return methodInfo.IsStatic;
         }
     }

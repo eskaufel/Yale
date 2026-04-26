@@ -23,6 +23,7 @@ internal sealed class SingleLiteralElement : RealLiteralElement
         catch (OverflowException)
         {
             element.OnParseOverflow(image);
+            return null;
         }
     }
 

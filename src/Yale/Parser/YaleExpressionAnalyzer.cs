@@ -25,9 +25,6 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
     private bool inUnaryNegate;
     private ExpressionContext? context;
 
-    private ExpressionContext Context =>
-        context ?? throw new InvalidOperationException("Call SetContext before parsing.");
-
     public void SetContext(ExpressionContext context) => this.context = context;
 
     public override void Reset() => context = null;
@@ -144,7 +141,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
         }
         else
         {
-            InvocationListElement invocationListElement = new(childValues, Context);
+            InvocationListElement invocationListElement = new(childValues, context);
             production.Values.Add(invocationListElement);
         }
 
@@ -209,7 +206,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
         }
         else
         {
-            InvocationListElement invocationListElement = new(childValues, Context);
+            InvocationListElement invocationListElement = new(childValues, context);
             op = new(operand, invocationListElement);
         }
 
@@ -233,7 +230,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
     public override Production ExitCastExpression(Production production)
     {
         var childValues = GetChildValues(production);
-        var destTypeParts = (string[])childValues[1];
+        var destTypeParts = childValues[1] as string[];
         var isArray = (bool)childValues[2];
 
         CastElement op =
@@ -241,7 +238,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
                 castExpression: (BaseExpressionElement)childValues[0],
                 destinationTypeParts: destTypeParts,
                 isArray: isArray,
-                context: Context
+                context: context
             );
 
         production.Values.Add(op);
@@ -280,7 +277,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
 
     public override Production ExitFieldPropertyExpression(Production production)
     {
-        var name = (string)production[0].Values[0];
+        var name = production[0].Values[0].ToString();
         IdentifierElement elem = new(name);
         production.Values.Add(elem);
         return production;
@@ -328,7 +325,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
 
         if (childValues.Count == 2)
         {
-            var element = (UnaryElement)Activator.CreateInstance(elementType, childValues[1])!;
+            var element = (UnaryElement)Activator.CreateInstance(elementType, childValues[1]);
             production.Values.Add(element);
         }
         else
@@ -360,9 +357,9 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
 
     public override Token ExitReal(Token token)
     {
-        var element = RealLiteralElement.Create(token.Image, Context.BuilderOptions);
+        var element = RealLiteralElement.Create(token.Image, context.BuilderOptions);
 
-        token.Values.Add(element!);
+        token.Values.Add(element);
         return token;
     }
 
@@ -372,7 +369,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
             token.Image,
             false,
             inUnaryNegate,
-            Context.BuilderOptions
+            context.BuilderOptions
         );
         token.Values.Add(element);
         return token;
@@ -384,7 +381,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
             token.Image,
             true,
             inUnaryNegate,
-            Context.BuilderOptions
+            context.BuilderOptions
         );
         token.Values.Add(element);
         return token;
@@ -426,7 +423,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
     public override Token ExitDatetime(Token token)
     {
         var image = token.Image[1..^1];
-        DateTimeLiteralElement element = new(image, Context);
+        DateTimeLiteralElement element = new(image, context);
         token.Values.Add(element);
         return token;
     }
@@ -602,9 +599,9 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
         return token;
     }
 
-    public override void Child(Production node, Node? child)
+    public override void Child(Production node, Node child)
     {
         base.Child(node, child);
-        inUnaryNegate = node.TypeId == TokenId.NEGATE_EXPRESSION & child?.TypeId == TokenId.SUB;
+        inUnaryNegate = node.TypeId == TokenId.NEGATE_EXPRESSION & child.TypeId == TokenId.SUB;
     }
 }

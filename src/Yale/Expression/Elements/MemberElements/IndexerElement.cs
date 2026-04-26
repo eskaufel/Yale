@@ -9,16 +9,18 @@ namespace Yale.Expression.Elements.MemberElements;
 /// </summary>
 internal sealed class IndexerElement : MemberElement
 {
-    private BaseExpressionElement _indexerElement = default!;
+    private BaseExpressionElement _indexerElement;
 
     private readonly ArgumentList _indexerElements;
 
-    private bool IsArray => Previous!.TargetType.IsArray;
+    private bool IsArray => Previous.TargetType.IsArray;
+
+    private Type ArrayType => IsArray ? Previous.TargetType : null;
 
     protected override bool RequiresAddress => IsArray == false;
 
     public override Type ResultType =>
-        IsArray ? Previous!.TargetType.GetElementType()! : _indexerElement.ResultType;
+        IsArray ? ArrayType.GetElementType() : _indexerElement.ResultType;
 
     protected override bool IsPublic => IsArray || IsElementPublic((MemberElement)_indexerElement);
 
@@ -28,7 +30,7 @@ internal sealed class IndexerElement : MemberElement
 
     protected override void ResolveInternal()
     {
-        var target = Previous!.TargetType;
+        var target = Previous.TargetType;
 
         // Are we are indexing on an array?
         if (target.IsArray)
@@ -87,7 +89,7 @@ internal sealed class IndexerElement : MemberElement
             PropertyInfo? propertyInfo = memberInfo as PropertyInfo;
             if (propertyInfo != null)
             {
-                methods.Add(propertyInfo.GetGetMethod(true)!);
+                methods.Add(propertyInfo.GetGetMethod(true));
             }
         }
 

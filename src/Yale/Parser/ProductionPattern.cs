@@ -76,7 +76,7 @@ internal sealed class ProductionPattern
      * list of alternatives. This property is set to null if no
      * default pattern alternative has been set.
      */
-    internal ProductionPatternAlternative? DefaultAlternative
+    internal ProductionPatternAlternative DefaultAlternative
     {
         get
         {

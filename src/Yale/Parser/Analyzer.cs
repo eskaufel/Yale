@@ -39,12 +39,12 @@ internal class Analyzer
     {
         ParserLogException log = new();
 
-        var result = Analyze(node, log);
+        node = Analyze(node, log);
         if (log.Count > 0)
         {
             throw log;
         }
-        return result;
+        return node;
     }
 
     /**
@@ -80,11 +80,7 @@ internal class Analyzer
             {
                 try
                 {
-                    var analyzed = Analyze(prod[i], log);
-                    if (analyzed is not null)
-                    {
-                        Child(prod, analyzed);
-                    }
+                    Child(prod, Analyze(prod[i], log));
                 }
                 catch (ParseException e)
                 {
@@ -162,7 +158,7 @@ internal class Analyzer
      *
      * @throws ParseException if the node analysis discovered errors
      */
-    public virtual void Child(Production node, Node? child) => node.AddChild(child!);
+    public virtual void Child(Production node, Node child) => node.AddChild(child);
 
     /**
      * Returns a child at the specified position. If either the node

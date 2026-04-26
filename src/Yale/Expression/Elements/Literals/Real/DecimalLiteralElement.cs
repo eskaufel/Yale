@@ -21,7 +21,7 @@ internal sealed class DecimalLiteralElement : RealLiteralElement
             CallingConventions.Any,
             types,
             null
-        )!;
+        );
     }
 
     public static DecimalLiteralElement Parse(string image)
@@ -36,6 +36,7 @@ internal sealed class DecimalLiteralElement : RealLiteralElement
         catch (OverflowException)
         {
             element.OnParseOverflow(image);
+            return null;
         }
     }
 

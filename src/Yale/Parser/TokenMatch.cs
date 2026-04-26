@@ -41,7 +41,7 @@ internal sealed class TokenMatch
     /**
      * The token pattern for the longest match found (read-only).
      */
-    public TokenPattern? Pattern
+    public TokenPattern Pattern
     {
         get { return pattern; }
     }
@@ -61,7 +61,7 @@ internal sealed class TokenMatch
             this.length = length;
             this.pattern = pattern;
         }
-        else if (this.length == length && this.pattern!.Id > pattern.Id)
+        else if (this.length == length && this.pattern.Id > pattern.Id)
         {
             this.length = length;
             this.pattern = pattern;
