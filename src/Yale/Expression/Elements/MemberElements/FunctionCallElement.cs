@@ -11,7 +11,7 @@ internal sealed class FunctionCallElement : MemberElement
     private readonly ArgumentList arguments;
     private readonly ICollection<MethodInfo> methods;
 
-    private CustomMethodInfo targetMethodInfo;
+    private CustomMethodInfo targetMethodInfo = default!;
 
     public FunctionCallElement(string name, ArgumentList arguments)
         : base(name) => this.arguments = arguments;
@@ -271,7 +271,7 @@ internal sealed class FunctionCallElement : MemberElement
         //    return;
         //}
 
-        var isOwnerMember = Context.OwnerType.IsAssignableFrom(Method.ReflectedType);
+        var isOwnerMember = Context.OwnerType?.IsAssignableFrom(Method.ReflectedType) == true;
 
         // Load the owner if required
         if (Previous is null && isOwnerMember && IsStatic == false)
@@ -314,7 +314,7 @@ internal sealed class FunctionCallElement : MemberElement
         // Emit them into an array
         EmitElementArrayLoad(
             paramArrayElements,
-            targetMethodInfo.ParamArrayElementType,
+            targetMethodInfo.ParamArrayElementType!,
             ilGenerator,
             context
         );

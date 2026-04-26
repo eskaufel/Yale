@@ -201,8 +201,8 @@ internal sealed class CastElement : BaseExpressionElement
                 return false;
             }
 
-            var sourceElementType = sourceType.GetElementType();
-            var destElementType = destType.GetElementType();
+            var sourceElementType = sourceType.GetElementType()!;
+            var destElementType = destType.GetElementType()!;
 
             // Both SE and TE are reference-types
             if (sourceElementType.IsValueType | destElementType.IsValueType)
@@ -284,7 +284,7 @@ internal sealed class CastElement : BaseExpressionElement
         castExpression.Emit(ilGenerator, context);
 
         var sourceType = castExpression.ResultType;
-        var destType = this.destType;
+        var destType = this.destType!;
 
         EmitCast(ilGenerator, sourceType, destType, context);
     }

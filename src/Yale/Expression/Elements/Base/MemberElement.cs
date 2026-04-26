@@ -175,7 +175,7 @@ internal abstract class MemberElement : BaseExpressionElement
     {
         ilg.Emit(OpCodes.Ldarg_0);
 
-        var ownerType = Context.OwnerType;
+        var ownerType = Context.OwnerType!;
 
         if (ownerType.IsValueType == false)
         {
