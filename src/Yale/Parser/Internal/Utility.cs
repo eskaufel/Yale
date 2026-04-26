@@ -212,7 +212,7 @@ internal static class Utility
         }
     }
 
-    public static Type GetBitwiseOpType(Type leftType, Type rightType)
+    public static Type? GetBitwiseOpType(Type leftType, Type rightType)
     {
         if (IsIntegralType(leftType) == false || IsIntegralType(rightType) == false)
         {

@@ -10,22 +10,22 @@ internal abstract class MemberElement : BaseExpressionElement
     /// <summary>
     /// Previous is the user part of the expression user.address [previous.next]
     /// </summary>
-    protected MemberElement Previous;
+    protected MemberElement? Previous;
 
     /// <summary>
     /// Next is the address part of the expression user.address [previous.next]
     /// </summary>
     protected MemberElement? Next;
 
-    protected ExpressionContext Context;
-    protected ImportBase Import;
+    protected ExpressionContext Context = default!;
+    protected ImportBase? Import;
     public ImportCollection Imports => Context.Imports;
     public VariableCollection Variables => Context.Variables;
 
     public const BindingFlags BindFlags =
         BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
 
-    public string MemberName { get; protected set; }
+    public string MemberName { get; protected set; } = default!;
 
     protected MemberElement() { }
 

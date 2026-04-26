@@ -13,12 +13,12 @@ internal sealed class IndexerElement : MemberElement
 
     private readonly ArgumentList _indexerElements;
 
-    private bool IsArray => Previous.TargetType.IsArray;
+    private bool IsArray => Previous!.TargetType.IsArray;
 
     protected override bool RequiresAddress => IsArray == false;
 
     public override Type ResultType =>
-        IsArray ? Previous.TargetType.GetElementType()! : _indexerElement.ResultType;
+        IsArray ? Previous!.TargetType.GetElementType()! : _indexerElement.ResultType;
 
     protected override bool IsPublic => IsArray || IsElementPublic((MemberElement)_indexerElement);
 
@@ -28,7 +28,7 @@ internal sealed class IndexerElement : MemberElement
 
     protected override void ResolveInternal()
     {
-        var target = Previous.TargetType;
+        var target = Previous!.TargetType;
 
         // Are we are indexing on an array?
         if (target.IsArray)

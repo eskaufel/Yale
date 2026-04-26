@@ -9,7 +9,7 @@ namespace Yale.Expression.Elements.MemberElements;
 internal sealed class FunctionCallElement : MemberElement
 {
     private readonly ArgumentList arguments;
-    private readonly ICollection<MethodInfo> methods;
+    private readonly ICollection<MethodInfo>? methods;
 
     private CustomMethodInfo targetMethodInfo = default!;
 
@@ -59,7 +59,7 @@ internal sealed class FunctionCallElement : MemberElement
         ThrowFunctionNotFoundException(Previous);
     }
 
-    private void ThrowFunctionNotFoundException(MemberElement previous)
+    private void ThrowFunctionNotFoundException(MemberElement? previous)
     {
         if (previous is null)
         {
@@ -82,7 +82,7 @@ internal sealed class FunctionCallElement : MemberElement
         }
     }
 
-    private void ThrowNoAccessibleMethodsException(MemberElement previous)
+    private void ThrowNoAccessibleMethodsException(MemberElement? previous)
     {
         if (previous is null)
         {
@@ -123,7 +123,7 @@ internal sealed class FunctionCallElement : MemberElement
     /// <param name="argTypes"></param>
     private void BindToMethod(
         ICollection<MethodInfo> methods,
-        MemberElement previous,
+        MemberElement? previous,
         Type[] argTypes
     )
     {
@@ -168,7 +168,7 @@ internal sealed class FunctionCallElement : MemberElement
     /// <param name="argTypes"></param>
     private void ResolveOverloads(
         CustomMethodInfo[] customInfoArray,
-        MemberElement previous,
+        MemberElement? previous,
         Type[] argTypes
     )
     {

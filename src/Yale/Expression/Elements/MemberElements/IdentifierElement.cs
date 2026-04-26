@@ -71,7 +71,7 @@ internal sealed class IdentifierElement : MemberElement
         }
     }
 
-    private bool ResolveFieldProperty(MemberElement previous)
+    private bool ResolveFieldProperty(MemberElement? previous)
     {
         var allMembers = GetMembers(MemberTypes.Field | MemberTypes.Property);
         var members = GetAccessibleMembers(allMembers);
@@ -118,7 +118,7 @@ internal sealed class IdentifierElement : MemberElement
         }
     }
 
-    private bool ResolveVirtualProperty(MemberElement previous)
+    private bool ResolveVirtualProperty(MemberElement? previous)
     {
         if (previous is null)
         {

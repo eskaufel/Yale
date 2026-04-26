@@ -78,7 +78,7 @@ internal sealed class CompareElement : BinaryExpressionElement
         return null;
     }
 
-    private MethodInfo GetOverloadedCompareOperator()
+    private MethodInfo? GetOverloadedCompareOperator()
     {
         var name = GetCompareOperatorName(operation);
         return GetOverloadedBinaryOperator(name, operation);
