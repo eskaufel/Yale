@@ -289,7 +289,7 @@ internal sealed class IdentifierElement : MemberElement
                 break;
         }
 
-        elem.Emit(ilg, context);
+        elem!.Emit(ilg, context);
     }
 
     private void EmitPropertyLoad(PropertyInfo pi, YaleIlGenerator ilg)
