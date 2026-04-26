@@ -162,7 +162,7 @@ internal class Analyzer
      *
      * @throws ParseException if the node analysis discovered errors
      */
-    public virtual void Child(Production node, Node child) => node.AddChild(child);
+    public virtual void Child(Production node, Node? child) => node.AddChild(child!);
 
     /**
      * Returns a child at the specified position. If either the node

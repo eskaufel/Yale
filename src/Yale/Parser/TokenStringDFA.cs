@@ -126,7 +126,7 @@ internal sealed class TokenStringDFA
         }
         while ((c = buffer.Peek(pos)) >= 0)
         {
-            next = state.tree.Find((char)c, caseInsensitive);
+            var next = state.tree.Find((char)c, caseInsensitive);
             if (next == null)
             {
                 break;
