@@ -602,9 +602,9 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
         return token;
     }
 
-    public override void Child(Production node, Node child)
+    public override void Child(Production node, Node? child)
     {
         base.Child(node, child);
-        inUnaryNegate = node.TypeId == TokenId.NEGATE_EXPRESSION & child.TypeId == TokenId.SUB;
+        inUnaryNegate = node.TypeId == TokenId.NEGATE_EXPRESSION & child?.TypeId == TokenId.SUB;
     }
 }
