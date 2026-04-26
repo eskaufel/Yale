@@ -15,7 +15,7 @@ internal abstract class MemberElement : BaseExpressionElement
     /// <summary>
     /// Next is the address part of the expression user.address [previous.next]
     /// </summary>
-    protected MemberElement Next;
+    protected MemberElement? Next;
 
     protected ExpressionContext Context;
     protected ImportBase Import;
@@ -31,7 +31,7 @@ internal abstract class MemberElement : BaseExpressionElement
 
     protected MemberElement(string name) => MemberName = name;
 
-    public void Link(MemberElement nextElement)
+    public void Link(MemberElement? nextElement)
     {
         Next = nextElement;
         if (nextElement is not null)

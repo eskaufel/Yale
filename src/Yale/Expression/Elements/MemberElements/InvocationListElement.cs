@@ -20,7 +20,7 @@ internal sealed class InvocationListElement : BaseExpressionElement
         Resolve(elements, context);
 
         //Todo: What is the _tail reference?
-        _tail = (MemberElement)elements[elements.Count - 1];
+        _tail = (MemberElement)elements[elements.Count - 1]!;
     }
 
     /// <summary>
@@ -31,11 +31,11 @@ internal sealed class InvocationListElement : BaseExpressionElement
     {
         for (var i = 0; i <= elements.Count - 1; i++)
         {
-            MemberElement currentElement = (MemberElement)elements[i];
-            MemberElement nextElement = null;
+            MemberElement currentElement = (MemberElement)elements[i]!;
+            MemberElement? nextElement = null;
             if (i + 1 < elements.Count)
             {
-                nextElement = (MemberElement)elements[i + 1];
+                nextElement = (MemberElement)elements[i + 1]!;
             }
             currentElement.Link(nextElement);
         }
