@@ -362,7 +362,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
     {
         var element = RealLiteralElement.Create(token.Image, Context.BuilderOptions);
 
-        token.Values.Add(element);
+        token.Values.Add(element!);
         return token;
     }
 

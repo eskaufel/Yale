@@ -39,12 +39,12 @@ internal class Analyzer
     {
         ParserLogException log = new();
 
-        node = Analyze(node, log);
+        var result = Analyze(node, log);
         if (log.Count > 0)
         {
             throw log;
         }
-        return node;
+        return result;
     }
 
     /**
@@ -80,7 +80,11 @@ internal class Analyzer
             {
                 try
                 {
-                    Child(prod, Analyze(prod[i], log));
+                    var analyzed = Analyze(prod[i], log);
+                    if (analyzed is not null)
+                    {
+                        Child(prod, analyzed);
+                    }
                 }
                 catch (ParseException e)
                 {
