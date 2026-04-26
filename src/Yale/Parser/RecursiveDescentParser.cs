@@ -623,10 +623,10 @@ internal class RecursiveDescentParser : Parser
 
         for (var i = 0; i < pattern.Count; i++)
         {
-            set1 = pattern[i].LookAhead;
+            set1 = pattern[i].LookAhead!;
             for (var j = 0; j < i; j++)
             {
-                set2 = pattern[j].LookAhead;
+                set2 = pattern[j].LookAhead!;
                 result.AddAll(set1.CreateIntersection(set2));
             }
         }
@@ -684,7 +684,7 @@ internal class RecursiveDescentParser : Parser
 
         for (i = 0; i < pattern.Count; i++)
         {
-            result = pattern[i].LookAhead;
+            result = pattern[i].LookAhead!;
             if (result.GetMaxLength() > length)
             {
                 length = result.GetMaxLength();
@@ -693,7 +693,7 @@ internal class RecursiveDescentParser : Parser
         result = new LookAheadSet(length);
         for (i = 0; i < pattern.Count; i++)
         {
-            result.AddAll(pattern[i].LookAhead);
+            result.AddAll(pattern[i].LookAhead!);
         }
 
         return result;
