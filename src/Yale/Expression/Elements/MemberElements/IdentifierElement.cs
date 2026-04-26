@@ -294,7 +294,7 @@ internal sealed class IdentifierElement : MemberElement
 
     private void EmitPropertyLoad(PropertyInfo pi, YaleIlGenerator ilg)
     {
-        var getter = pi.GetGetMethod(true);
+        var getter = pi.GetGetMethod(true)!;
         EmitMethodCall(getter, ilg);
     }
 
@@ -312,7 +312,7 @@ internal sealed class IdentifierElement : MemberElement
         {
             if (field is not null)
             {
-                return field.ReflectedType;
+                return field.ReflectedType!;
             }
 
             if (propertyDescriptor is not null)
@@ -320,7 +320,7 @@ internal sealed class IdentifierElement : MemberElement
                 return propertyDescriptor.ComponentType;
             }
 
-            return property?.ReflectedType;
+            return property!.ReflectedType!;
         }
     }
 
@@ -348,7 +348,7 @@ internal sealed class IdentifierElement : MemberElement
                 return field.FieldType;
             }
 
-            var methodInfo = property.GetGetMethod(true);
+            var methodInfo = property!.GetGetMethod(true)!;
             return methodInfo.ReturnType;
         }
     }
@@ -379,7 +379,7 @@ internal sealed class IdentifierElement : MemberElement
                 return field.IsPublic;
             }
 
-            var methodInfo = property.GetGetMethod(true);
+            var methodInfo = property!.GetGetMethod(true)!;
             return methodInfo.IsPublic;
         }
     }
@@ -462,7 +462,7 @@ internal sealed class IdentifierElement : MemberElement
                 return false;
             }
 
-            var methodInfo = property.GetGetMethod(true);
+            var methodInfo = property!.GetGetMethod(true)!;
             return methodInfo.IsStatic;
         }
     }
