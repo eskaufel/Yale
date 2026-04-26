@@ -15,14 +15,14 @@ namespace Yale.Expression.Elements.MemberElements;
 internal sealed class IdentifierElement : MemberElement
 {
     private FieldInfo? field;
-    private PropertyInfo property;
-    private PropertyDescriptor propertyDescriptor;
+    private PropertyInfo? property;
+    private PropertyDescriptor? propertyDescriptor;
 
     //A value from the value collection
-    private Type valueType;
+    private Type? valueType;
 
     //Another expression
-    private Type calcEngineReferenceType;
+    private Type? calcEngineReferenceType;
 
     public IdentifierElement(string name)
         : base(name) { }

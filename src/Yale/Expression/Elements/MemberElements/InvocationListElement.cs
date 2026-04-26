@@ -43,7 +43,7 @@ internal sealed class InvocationListElement : BaseExpressionElement
 
     private void HandleFirstElement(IList elements, ExpressionContext context)
     {
-        BaseExpressionElement firstElement = (BaseExpressionElement)elements[0];
+        BaseExpressionElement firstElement = (BaseExpressionElement)elements[0]!;
 
         // If the first element is not a member element, then we assume it
         //is an expression and replace it with the correct member element
@@ -81,7 +81,7 @@ internal sealed class InvocationListElement : BaseExpressionElement
 
             if (elements.Count > 0)
             {
-                MemberElement newFirst = (MemberElement)elements[0];
+                MemberElement newFirst = (MemberElement)elements[0]!;
                 newFirst.SetImport(currentImport);
             }
         }
