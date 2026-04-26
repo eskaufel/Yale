@@ -92,7 +92,7 @@ internal class RecursiveDescentParser : Parser
         {
             ThrowParseException(FindUnion(pattern));
         }
-        return ParseAlternative(defaultAlt);
+        return ParseAlternative(defaultAlt!);
     }
 
     /**

@@ -174,5 +174,5 @@ internal abstract class BinaryExpressionElement : BaseExpressionElement
         ValidateInternal(op);
     }
 
-    public sealed override Type ResultType => resultType;
+    public sealed override Type ResultType => resultType!;
 }

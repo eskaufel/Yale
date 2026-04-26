@@ -175,7 +175,7 @@ internal sealed class InElement : BaseExpressionElement
         var methodName = "Contains";
 
         if (
-            targetCollectionType.IsGenericType
+            targetCollectionType!.IsGenericType
             && ReferenceEquals(
                 targetCollectionType.GetGenericTypeDefinition(),
                 typeof(IDictionary<,>)

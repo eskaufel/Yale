@@ -538,5 +538,5 @@ internal sealed class CastElement : BaseExpressionElement
         }
     }
 
-    public override Type ResultType => destType;
+    public override Type ResultType => destType!;
 }
