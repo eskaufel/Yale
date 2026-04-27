@@ -5,7 +5,7 @@
     "CSharpier": {
       "version": "1.2.6",
       "commands": [
-        "dotnet-csharpier"
+        "csharpier"
       ]
     },
     "husky": {
