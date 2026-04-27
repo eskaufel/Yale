@@ -24,4 +24,18 @@ public class Operator
         _instance.AddExpression("b", "2 eq 2");
         Assert.IsTrue(_instance.GetResult<bool>("b"));
     }
+
+    [TestMethod]
+    public void LeftShift()
+    {
+        _instance.AddExpression("a", "1 << 3");
+        Assert.AreEqual(8, _instance.GetResult<int>("a"));
+    }
+
+    [TestMethod]
+    public void LeftShift_LargerValue()
+    {
+        _instance.AddExpression("a", "0x01 << 7");
+        Assert.AreEqual(128, _instance.GetResult<int>("a"));
+    }
 }

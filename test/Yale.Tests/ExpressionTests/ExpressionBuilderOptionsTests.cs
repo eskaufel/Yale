@@ -80,4 +80,49 @@ public class ExpressionBuilderOptionsTests
         _instance.AddExpression("a", "4.0");
         Assert.AreEqual(typeof(Single), _instance.GetResult("a").GetType());
     }
+
+    [TestMethod]
+    public void IntegerAsDouble_TreatsIntegerLiteralsAsDouble()
+    {
+        _instance = new ComputeInstance(
+            new ComputeInstanceOptions
+            {
+                ExpressionOptions = new ExpressionBuilderOptions { IntegerAsDouble = true }
+            }
+        );
+        _instance.AddExpression("a", "42");
+        Assert.AreEqual(typeof(double), _instance.GetResult("a").GetType());
+        Assert.AreEqual(42.0, _instance.GetResult<double>("a"));
+    }
+
+    [TestMethod]
+    public void CaseSensitive_False_AllowsCaseInsensitiveMemberAccess()
+    {
+        _instance = new ComputeInstance(
+            new ComputeInstanceOptions
+            {
+                ExpressionOptions = new ExpressionBuilderOptions { CaseSensitive = false }
+            }
+        );
+        _instance.Variables.Add("rand", new Random());
+        // With case-insensitive mode, lowercase method name resolves to NextDouble
+        _instance.AddExpression("a", "rand.nextdouble() + 0");
+        Assert.IsInstanceOfType(_instance.GetResult<double>("a"), typeof(double));
+    }
+
+    [TestMethod]
+    public void CaseSensitive_False_AllowsCaseInsensitiveExpressionReference()
+    {
+        _instance = new ComputeInstance(
+            new ComputeInstanceOptions
+            {
+                ExpressionOptions = new ExpressionBuilderOptions { CaseSensitive = false }
+            }
+        );
+        // nameNodeMap uses OrdinalIgnoreCase when CaseSensitive=false,
+        // so expression key "result" is reachable as "RESULT" in another expression
+        _instance.AddExpression("result", "5 + 3");
+        _instance.AddExpression("doubled", "RESULT * 2");
+        Assert.AreEqual(16, _instance.GetResult<int>("doubled"));
+    }
 }
