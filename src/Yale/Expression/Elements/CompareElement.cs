@@ -17,7 +17,7 @@ internal sealed class CompareElement : BinaryExpressionElement
     {
         this.operation = operation;
         LeftChild = leftChild;
-        RightChild = (Int32LiteralElement)rightChild;
+        RightChild = rightChild;
     }
 
     public void Validate() => ValidateInternal(operation);

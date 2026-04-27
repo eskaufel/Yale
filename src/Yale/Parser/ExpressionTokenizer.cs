@@ -87,7 +87,7 @@ internal sealed class ExpressionTokenizer : Tokenizer
             TokenId.ARGUMENT_SEPARATOR,
             "ARGUMENT_SEPARATOR",
             PatternType.STRING,
-            ";"
+            ","
         );
         AddPattern(pattern);
 
