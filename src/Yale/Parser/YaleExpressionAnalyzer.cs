@@ -223,7 +223,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
     public override Production ExitInListTargetExpression(Production production)
     {
         var childValues = GetChildValues(production);
-        production.Values.AddRange(childValues);
+        production.Values.Add(childValues);
         return production;
     }
 

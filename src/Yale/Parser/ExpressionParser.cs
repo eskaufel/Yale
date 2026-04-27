@@ -254,7 +254,7 @@ internal sealed class ExpressionParser : RecursiveDescentParser
         pattern = new ProductionPattern(TokenId.ARGUMENT_LIST, "ArgumentList");
         alt = new ProductionPatternAlternative();
         alt.AddProduction(TokenId.EXPRESSION, 1, 1);
-        //alt.AddProduction(TokenId.SUBPRODUCTION_16, 0, -1);
+        alt.AddProduction(TokenId.SUBPRODUCTION_16, 0, -1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 
