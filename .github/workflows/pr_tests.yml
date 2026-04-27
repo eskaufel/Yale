@@ -6,6 +6,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      CICD: '0'
 
     steps:
       - name: Checkout code
