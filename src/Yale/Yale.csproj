@@ -17,7 +17,6 @@
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<AnalysisLevel>latest-Recommended</AnalysisLevel>
 		
-		<Features>strict</Features>
 		<Nullable>enable</Nullable>
 		
 		<PackageReadmeFile></PackageReadmeFile>

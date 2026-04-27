@@ -1,4 +1,7 @@
-﻿[*.{cs,vb}]
+﻿[*.Designer.cs]
+generated_code = true
+
+[*.{cs,vb}]
 
 # IDE0046: Convert to conditional expression
 dotnet_style_prefer_conditional_expression_over_return = false:silent
