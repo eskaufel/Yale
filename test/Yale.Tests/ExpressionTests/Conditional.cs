@@ -12,7 +12,7 @@ public class Conditional
     public void IfTestTrue()
     {
         _instance.Variables.Add("a", 1);
-        _instance.AddExpression("b", "If(a < 100; true; false)");
+        _instance.AddExpression("b", "If(a < 100, true, false)");
 
         Assert.IsTrue((bool)_instance.GetResult("b"));
     }
@@ -21,7 +21,7 @@ public class Conditional
     public void IfTestFalse()
     {
         _instance.Variables.Add("a", 1);
-        _instance.AddExpression("b", "If(a > 100; true; false)");
+        _instance.AddExpression("b", "If(a > 100, true, false)");
 
         Assert.IsFalse((bool)_instance.GetResult("b"));
     }
