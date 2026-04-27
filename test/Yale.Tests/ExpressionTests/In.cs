@@ -12,14 +12,14 @@ public class In
     [TestMethod]
     public void In_List_ContainsValue_ReturnsTrue()
     {
-        _instance.AddExpression("a", "3 in (1, 2, 3)");
+        _instance.AddExpression("a", "3 in (1; 2; 3)");
         Assert.IsTrue(_instance.GetResult<bool>("a"));
     }
 
     [TestMethod]
     public void In_List_MissingValue_ReturnsFalse()
     {
-        _instance.AddExpression("a", "5 in (1, 2, 3)");
+        _instance.AddExpression("a", "5 in (1; 2; 3)");
         Assert.IsFalse(_instance.GetResult<bool>("a"));
     }
 
@@ -27,7 +27,7 @@ public class In
     public void In_List_WithVariable_ContainsValue_ReturnsTrue()
     {
         _instance.Variables.Add("x", 2);
-        _instance.AddExpression("a", "x in (1, 2, 3)");
+        _instance.AddExpression("a", "x in (1; 2; 3)");
         Assert.IsTrue(_instance.GetResult<bool>("a"));
     }
 
@@ -35,7 +35,7 @@ public class In
     public void In_List_WithVariable_MissingValue_ReturnsFalse()
     {
         _instance.Variables.Add("x", 9);
-        _instance.AddExpression("a", "x in (1, 2, 3)");
+        _instance.AddExpression("a", "x in (1; 2; 3)");
         Assert.IsFalse(_instance.GetResult<bool>("a"));
     }
 
