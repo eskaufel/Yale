@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Yale.Engine;
 using Yale.Expression;
@@ -184,5 +185,76 @@ public class ComputeInstanceTests
         Assert.AreEqual(2, (int)instance.GetResult("a"));
         instance.SetExpression<int>("a", "3");
         Assert.AreEqual(3, (int)instance.GetResult("a"));
+    }
+
+    [TestMethod]
+    public void TryGetResult_ExpressionExists_ReturnsTrueAndValue()
+    {
+        instance.AddExpression("a", "42");
+        var found = instance.TryGetResult("a", out var result);
+        Assert.IsTrue(found);
+        Assert.AreEqual(42, result);
+    }
+
+    [TestMethod]
+    public void TryGetResult_ExpressionNotFound_ReturnsFalse()
+    {
+        var found = instance.TryGetResult("missing", out var result);
+        Assert.IsFalse(found);
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void TryGetResult_Generic_ExpressionExists_ReturnsTrueAndValue()
+    {
+        instance.AddExpression<string>("a", "\"hello\"");
+        var found = instance.TryGetResult<string>("a", out var result);
+        Assert.IsTrue(found);
+        Assert.AreEqual("hello", result);
+    }
+
+    [TestMethod]
+    public void TryGetResult_Generic_ExpressionNotFound_ReturnsFalse()
+    {
+        var found = instance.TryGetResult<string>("missing", out var result);
+        Assert.IsFalse(found);
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void ExpressionKeys_ContainsAllAddedKeys()
+    {
+        instance.AddExpression("a", "1");
+        instance.AddExpression("b", "2");
+        instance.AddExpression("c", "3");
+        var keys = instance.ExpressionKeys.ToList();
+        CollectionAssert.AreEquivalent(new[] { "a", "b", "c" }, keys);
+    }
+
+    [TestMethod]
+    public void ExpressionKeys_EmptyWhenNoExpressions()
+    {
+        Assert.IsFalse(instance.ExpressionKeys.Any());
+    }
+
+    [TestMethod]
+    public void ResultType_ReturnsCorrectType()
+    {
+        instance.AddExpression<int>("a", "42");
+        instance.AddExpression<bool>("b", "true");
+        Assert.AreEqual(typeof(int), instance.ResultType("a"));
+        Assert.AreEqual(typeof(bool), instance.ResultType("b"));
+    }
+
+    [TestMethod]
+    public void DependencyGraph_ContainsDependencyRelationships()
+    {
+        instance.Variables.Add("x", 10);
+        instance.AddExpression("a", "x * 2");
+        instance.AddExpression("b", "a + 1");
+        var graph = instance.DependencyGraph;
+        Assert.IsNotNull(graph);
+        StringAssert.Contains(graph, "x");
+        StringAssert.Contains(graph, "a");
     }
 }
