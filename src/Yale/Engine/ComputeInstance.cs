@@ -102,7 +102,8 @@ public class ComputeInstance
 
         node.Dirty = true;
 
-        foreach (var dependent in dependencies.GetDependents(key))
+        using var dependents = dependencies.GetDependents(key);
+        foreach (var dependent in dependents)
         {
             TagNodeAndDependentsAsDirty(dependent);
         }
@@ -110,7 +111,8 @@ public class ComputeInstance
 
     private void RecalculateValues(object? sender, PropertyChangedEventArgs e)
     {
-        foreach (var dependentKey in dependencies.GetDependents(e.PropertyName!))
+        using var dependents = dependencies.GetDependents(e.PropertyName!);
+        foreach (var dependentKey in dependents)
         {
             RecalculateNodeAndDependents(dependentKey);
         }
@@ -126,7 +128,8 @@ public class ComputeInstance
         if (result.Equals(node.ResultAsObject))
             return;
 
-        foreach (var dependent in dependencies.GetDependents(key))
+        using var dependents = dependencies.GetDependents(key);
+        foreach (var dependent in dependents)
         {
             RecalculateNodeAndDependents(dependent);
         }
@@ -164,7 +167,8 @@ public class ComputeInstance
 
         AddExpression<T>(key, expression);
 
-        foreach (var dependent in dependencies.GetDependents(key))
+        using var dependents = dependencies.GetDependents(key);
+        foreach (var dependent in dependents)
         {
             if (options.Recalculate == ComputeInstanceOptions.RecalculateMode.Auto)
             {

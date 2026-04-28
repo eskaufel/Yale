@@ -1,4 +1,6 @@
-﻿namespace Yale.Engine.Internal;
+using System.Buffers;
+
+namespace Yale.Engine.Internal;
 
 /// <summary>
 /// Keeps track of expression dependencies
@@ -37,32 +39,28 @@ internal sealed class DependencyManager
 
     public string[] GetDirectDependents(string key)
     {
-        if (Nodes.ContainsKey(key) is false)
+        if (!Nodes.TryGetValue(key, out var node))
             return Array.Empty<string>();
-        return Nodes[key].Dependents;
+        return node.Dependents;
     }
 
-    public string[] GetDependents(string key)
+    public DependentsResult GetDependents(string key)
     {
-        if (Nodes.ContainsKey(key) is false)
-            return Array.Empty<string>();
+        if (!Nodes.TryGetValue(key, out var node) || node.Dependents.Length == 0)
+            return default;
 
-        List<string> dependents = new();
-        foreach (var pair in Nodes[key].Dependents)
-        {
-            GetDependentsRecursive(pair, dependents);
-        }
+        var result = new DependentsResult(initialCapacity: 8);
+        foreach (var pair in node.Dependents)
+            GetDependentsRecursive(pair, ref result);
 
-        return dependents.ToArray();
+        return result;
     }
 
-    private void GetDependentsRecursive(string nodeKey, ICollection<string> dependents)
+    private void GetDependentsRecursive(string nodeKey, ref DependentsResult dependents)
     {
         dependents.Add(nodeKey);
         foreach (var pair in Nodes[nodeKey].Dependents)
-        {
-            GetDependentsRecursive(pair, dependents);
-        }
+            GetDependentsRecursive(pair, ref dependents);
     }
 
     public string[] GetDirectPrecedents(string nodeKey) => Nodes[nodeKey].Precedents;
@@ -93,4 +91,54 @@ internal sealed class DependencyManager
     }
 
     public int DependencyNodes => Nodes.Count;
+}
+
+/// <summary>
+/// ArrayPool-backed buffer for iterating dependents without heap allocation per call.
+/// Must be disposed after use (use with `using var`).
+/// </summary>
+internal ref struct DependentsResult
+{
+    private string[]? _buffer;
+    private int _count;
+
+    internal DependentsResult(int initialCapacity)
+    {
+        _buffer = ArrayPool<string>.Shared.Rent(initialCapacity > 0 ? initialCapacity : 1);
+        _count = 0;
+    }
+
+    internal void Add(string item)
+    {
+        if (_buffer is null)
+        {
+            _buffer = ArrayPool<string>.Shared.Rent(8);
+        }
+        else if (_count == _buffer.Length)
+        {
+            var grown = ArrayPool<string>.Shared.Rent(_buffer.Length * 2);
+            _buffer.AsSpan(0, _count).CopyTo(grown);
+            _buffer.AsSpan(0, _count).Clear();
+            ArrayPool<string>.Shared.Return(_buffer, clearArray: false);
+            _buffer = grown;
+        }
+        _buffer[_count++] = item;
+    }
+
+    public ReadOnlySpan<string>.Enumerator GetEnumerator()
+    {
+        ReadOnlySpan<string> span =
+            _buffer is null ? ReadOnlySpan<string>.Empty : new ReadOnlySpan<string>(_buffer, 0, _count);
+        return span.GetEnumerator();
+    }
+
+    public void Dispose()
+    {
+        if (_buffer is not null)
+        {
+            _buffer.AsSpan(0, _count).Clear();
+            ArrayPool<string>.Shared.Return(_buffer, clearArray: false);
+            _buffer = null;
+        }
+    }
 }
