@@ -46,10 +46,10 @@ internal sealed class DependencyManager
 
     public DependentsResult GetDependents(string key)
     {
-        var result = new DependentsResult(initialCapacity: 8);
-        if (!Nodes.TryGetValue(key, out var node))
-            return result;
+        if (!Nodes.TryGetValue(key, out var node) || node.Dependents.Length == 0)
+            return default;
 
+        var result = new DependentsResult(initialCapacity: 8);
         foreach (var pair in node.Dependents)
             GetDependentsRecursive(pair, ref result);
 
@@ -99,7 +99,7 @@ internal sealed class DependencyManager
 /// </summary>
 internal ref struct DependentsResult
 {
-    private string[] _buffer;
+    private string[]? _buffer;
     private int _count;
 
     internal DependentsResult(int initialCapacity)
@@ -110,10 +110,15 @@ internal ref struct DependentsResult
 
     internal void Add(string item)
     {
-        if (_count == _buffer.Length)
+        if (_buffer is null)
+        {
+            _buffer = ArrayPool<string>.Shared.Rent(8);
+        }
+        else if (_count == _buffer.Length)
         {
             var grown = ArrayPool<string>.Shared.Rent(_buffer.Length * 2);
             _buffer.AsSpan(0, _count).CopyTo(grown);
+            _buffer.AsSpan(0, _count).Clear();
             ArrayPool<string>.Shared.Return(_buffer, clearArray: false);
             _buffer = grown;
         }
@@ -131,8 +136,9 @@ internal ref struct DependentsResult
     {
         if (_buffer is not null)
         {
-            ArrayPool<string>.Shared.Return(_buffer, clearArray: true);
-            _buffer = null!;
+            _buffer.AsSpan(0, _count).Clear();
+            ArrayPool<string>.Shared.Return(_buffer, clearArray: false);
+            _buffer = null;
         }
     }
 }
