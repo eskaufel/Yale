@@ -24,7 +24,6 @@ public class Integer
     }
 
     [TestMethod]
-    [DataTestMethod]
     [DataRow("1", "+", "1", 2)]
     [DataRow("1", "-", "1", 0)]
     [DataRow("2", "*", "2", 4)]
