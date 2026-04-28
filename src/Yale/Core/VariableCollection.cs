@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Yale.Core.Interfaces;
 
 namespace Yale.Core;
@@ -8,6 +10,15 @@ public sealed class VariableCollection
     : INotifyPropertyChanged,
         IEnumerable<KeyValuePair<string, object>>
 {
+    private static readonly MethodInfo GetVariableValueInternalOpenMethod =
+        typeof(VariableCollection).GetMethod(
+            nameof(GetVariableValueInternal),
+            BindingFlags.Public | BindingFlags.Instance
+        )!;
+
+    private static readonly ConcurrentDictionary<Type, MethodInfo> GetVariableValueClosedMethods =
+        new();
+
     private readonly Dictionary<string, IVariable> values = new();
 
     public void Clear() => values.Clear();
@@ -90,15 +101,11 @@ public sealed class VariableCollection
     /// </summary>
     /// <param name="variableType">Return value</param>
     /// <returns></returns>
-    internal static MethodInfo GetVariableLoadMethod(Type variableType)
-    {
-        var methodInfo = typeof(VariableCollection).GetMethod(
-            nameof(GetVariableValueInternal),
-            BindingFlags.Public | BindingFlags.Instance
+    internal static MethodInfo GetVariableLoadMethod(Type variableType) =>
+        GetVariableValueClosedMethods.GetOrAdd(
+            variableType,
+            static t => GetVariableValueInternalOpenMethod.MakeGenericMethod(t)
         );
-
-        return methodInfo!.MakeGenericMethod(variableType);
-    }
 
     public T GetVariableValueInternal<T>(string name) => (T)values[name].ValueAsObject;
 
