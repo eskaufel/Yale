@@ -17,6 +17,7 @@ internal sealed class ExpressionContext
         BuilderOptions = builderOptions;
         ExpressionName = expressionName;
         Owner = owner;
+        OwnerType = owner?.GetType();
         Imports = imports;
         Variables = variables;
         ComputeInstance = computeInstance;
@@ -24,7 +25,7 @@ internal sealed class ExpressionContext
 
     public object Owner { get; }
 
-    public Type? OwnerType => Owner?.GetType();
+    public Type? OwnerType { get; }
 
     internal ExpressionBuilderOptions BuilderOptions { get; } = new ExpressionBuilderOptions();
 
