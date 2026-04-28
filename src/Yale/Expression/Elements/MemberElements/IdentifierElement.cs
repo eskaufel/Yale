@@ -289,9 +289,9 @@ internal sealed class IdentifierElement : MemberElement
                 break;
 
             default:
-                elem = null;
-                Debug.Fail("Unsupported constant type");
-                break;
+                throw new InvalidOperationException(
+                    $"Unsupported constant type: {value.GetType()}"
+                );
         }
 
         elem.Emit(ilg, context);
@@ -353,7 +353,13 @@ internal sealed class IdentifierElement : MemberElement
                 return field.FieldType;
             }
 
-            var methodInfo = property.GetGetMethod(true);
+            if (property is null)
+                throw new InvalidOperationException("No member resolved for identifier");
+            var methodInfo =
+                property.GetGetMethod(true)
+                ?? throw new InvalidOperationException(
+                    $"Property '{property.Name}' has no getter"
+                );
             return methodInfo.ReturnType;
         }
     }

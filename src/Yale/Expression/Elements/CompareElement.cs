@@ -107,8 +107,7 @@ internal sealed class CompareElement : BinaryExpressionElement
                 return "LessThanOrEqual";
 
             default:
-                Debug.Assert(false, "unknown compare type");
-                return null;
+                throw new InvalidOperationException($"Unknown compare operation: {op}");
         }
     }
 

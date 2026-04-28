@@ -20,7 +20,7 @@ internal sealed class UInt32LiteralElement : IntegralLiteralElement
     }
 
     public override void Emit(YaleIlGenerator ilGenerator, ExpressionContext context) =>
-        EmitLoad(Convert.ToInt32(_myValue), ilGenerator);
+        EmitLoad(unchecked((int)_myValue), ilGenerator);
 
     public override Type ResultType => typeof(uint);
 }
