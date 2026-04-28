@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Yale.Core;
 using Yale.Engine.Interface;
 using Yale.Engine.Internal;
@@ -10,6 +12,23 @@ namespace Yale.Engine;
 
 public class ComputeInstance
 {
+    private static readonly MethodInfo ComputeInstanceGetterMethod =
+        typeof(ExpressionContext)
+            .GetProperty(nameof(ExpressionContext.ComputeInstance))!
+            .GetGetMethod()!;
+
+    private static readonly MethodInfo GetResultOpenMethod = typeof(ComputeInstance)
+        .FindMembers(
+            MemberTypes.Method,
+            BindingFlags.Instance | BindingFlags.Public,
+            Type.FilterName,
+            "GetResult"
+        )
+        .Cast<MethodInfo>()
+        .First(m => m.IsGenericMethod);
+
+    private static readonly ConcurrentDictionary<Type, MethodInfo> GetResultClosedMethods = new();
+
     private readonly ComputeInstanceOptions options;
     internal ExpressionBuilder Builder { get; }
 
@@ -296,22 +315,13 @@ public class ComputeInstance
     /// <param name="ilGenerator"></param>
     internal void EmitLoad(string expressionKey, YaleIlGenerator ilGenerator)
     {
-        var propertyInfo = typeof(ExpressionContext).GetProperty(
-            nameof(ExpressionContext.ComputeInstance)
-        );
+        ilGenerator.Emit(OpCodes.Callvirt, ComputeInstanceGetterMethod);
 
-        ilGenerator.Emit(OpCodes.Callvirt, propertyInfo.GetGetMethod());
-
-        //Find and load expression result
-        var members = typeof(ComputeInstance).FindMembers(
-            MemberTypes.Method,
-            BindingFlags.Instance | BindingFlags.Public,
-            Type.FilterName,
-            "GetResult"
-        );
-        var methodInfo = members.Cast<MethodInfo>().First(method => method.IsGenericMethod);
         var resultType = ResultType(expressionKey);
-        methodInfo = methodInfo.MakeGenericMethod(resultType);
+        var methodInfo = GetResultClosedMethods.GetOrAdd(
+            resultType,
+            static t => GetResultOpenMethod.MakeGenericMethod(t)
+        );
 
         ilGenerator.Emit(OpCodes.Ldstr, expressionKey);
         ilGenerator.Emit(OpCodes.Call, methodInfo);
