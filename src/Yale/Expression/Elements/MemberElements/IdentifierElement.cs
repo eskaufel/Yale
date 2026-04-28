@@ -40,7 +40,10 @@ internal sealed class IdentifierElement : MemberElement
         if (Context.Variables.TryGetValue(MemberName, out IVariable? value))
         {
             valueType = value.Type;
-            computeInstance?.AddDependency(Context.ExpressionName, MemberName);
+            var dependencyKey = Context.Variables.TryGetCanonicalKey(MemberName, out var canonical)
+                ? canonical
+                : MemberName;
+            computeInstance?.AddDependency(Context.ExpressionName, dependencyKey);
             return;
         }
 

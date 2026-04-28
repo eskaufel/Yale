@@ -23,7 +23,17 @@ public sealed class VariableCollection
     private static readonly ConcurrentDictionary<Type, MethodInfo> GetVariableValueClosedMethods =
         new();
 
-    private readonly Dictionary<string, IVariable> values = new();
+    private readonly Dictionary<string, IVariable> values;
+
+    public VariableCollection()
+    {
+        values = new Dictionary<string, IVariable>();
+    }
+
+    internal VariableCollection(StringComparer comparer)
+    {
+        values = new Dictionary<string, IVariable>(comparer);
+    }
 
     public void Clear() => values.Clear();
 
@@ -99,6 +109,20 @@ public sealed class VariableCollection
 
     public ICollection<string> Keys => values.Keys;
     public ICollection<object> Values => values.Values.Select(v => v.ValueAsObject).ToList();
+
+    internal bool TryGetCanonicalKey(string key, [NotNullWhen(true)] out string? canonicalKey)
+    {
+        foreach (var k in values.Keys)
+        {
+            if (values.Comparer.Equals(k, key))
+            {
+                canonicalKey = k;
+                return true;
+            }
+        }
+        canonicalKey = null;
+        return false;
+    }
 
     /// <summary>
     /// This is used to crate a method call that can retrieve a value from the value collection
