@@ -14,7 +14,11 @@ public sealed class VariableCollection
         typeof(VariableCollection).GetMethod(
             nameof(GetVariableValueInternal),
             BindingFlags.Public | BindingFlags.Instance
-        )!;
+        )
+        ?? throw new MissingMethodException(
+            typeof(VariableCollection).FullName,
+            nameof(GetVariableValueInternal)
+        );
 
     private static readonly ConcurrentDictionary<Type, MethodInfo> GetVariableValueClosedMethods =
         new();
