@@ -24,7 +24,6 @@ public class Integer
     }
 
     [TestMethod]
-    [DataTestMethod]
     [DataRow("1", "+", "1", 2)]
     [DataRow("1", "-", "1", 0)]
     [DataRow("2", "*", "2", 4)]
@@ -67,10 +66,10 @@ public class Integer
     //[TestMethod]
     //public void IntegerPowerIntegerOverflow_Exception()
     //{
-    //    Assert.ThrowsException<OverflowException>(() => _instance.AddExpression("a", $"{int.MaxValue}2^2"));
-    //    Assert.ThrowsException<OverflowException>(() => _instance.AddExpression<int>("a", "2147483600^2"));
+    //    Assert.Throws<OverflowException>(() => _instance.AddExpression("a", $"{int.MaxValue}2^2"));
+    //    Assert.Throws<OverflowException>(() => _instance.AddExpression<int>("a", "2147483600^2"));
     //    //Int64
-    //    Assert.ThrowsException<OverflowException>(() => _instance.AddExpression("a", "21474836001^234123"));
+    //    Assert.Throws<OverflowException>(() => _instance.AddExpression("a", "21474836001^234123"));
     //}
 
     [TestMethod]
@@ -90,10 +89,10 @@ public class Integer
     [TestMethod]
     public void IntegerAdditionIntegerOverFlow_Exception()
     {
-        Assert.ThrowsException<OverflowException>(
+        Assert.Throws<OverflowException>(
             () => _instance.AddExpression("a", $"{long.MaxValue} + 1")
         );
-        Assert.ThrowsException<OverflowException>(
+        Assert.Throws<OverflowException>(
             () => _instance.AddExpression<long>("b", $"{long.MaxValue} + 1")
         );
     }
@@ -115,10 +114,10 @@ public class Integer
     [TestMethod]
     public void IntegerSubtractionIntegerOverFlow_Exception()
     {
-        Assert.ThrowsException<OverflowException>(
+        Assert.Throws<OverflowException>(
             () => _instance.AddExpression("a", $"{long.MinValue} - 1")
         );
-        Assert.ThrowsException<OverflowException>(
+        Assert.Throws<OverflowException>(
             () => _instance.AddExpression<long>("b", $"{long.MinValue} - 1")
         );
     }

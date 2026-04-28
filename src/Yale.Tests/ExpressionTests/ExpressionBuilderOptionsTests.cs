@@ -16,7 +16,7 @@ public class ExpressionBuilderOptionsTests
         _instance.AddExpression("a", int.MaxValue.ToString());
 
         //OverflowCheck
-        Assert.ThrowsException<OverflowException>(() => _instance.AddExpression("b", "a + 1"));
+        Assert.Throws<OverflowException>(() => _instance.AddExpression("b", "a + 1"));
         _instance.AddExpression("b", "a - 1");
 
         //IntegerAsDouble (Default == false)
@@ -25,16 +25,16 @@ public class ExpressionBuilderOptionsTests
         #region CaseSensitive
 
         //Variables
-        Assert.ThrowsException<ExpressionCompileException>(() => _instance.AddExpression("c", "A"));
+        Assert.Throws<ExpressionCompileException>(() => _instance.AddExpression("c", "A"));
         _instance.AddExpression("c", "a");
 
         //Expression
-        Assert.ThrowsException<ExpressionCompileException>(() => _instance.AddExpression("d", "C"));
+        Assert.Throws<ExpressionCompileException>(() => _instance.AddExpression("d", "C"));
         _instance.AddExpression("d", "c");
 
         //Members
         _instance.Variables.Add("rand", new Random());
-        Assert.ThrowsException<ExpressionCompileException>(
+        Assert.Throws<ExpressionCompileException>(
             () => _instance.AddExpression("e", "rand.nextDouble() + 100")
         );
         _instance.AddExpression("e", "rand.NextDouble() + 100");

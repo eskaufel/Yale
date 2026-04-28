@@ -63,15 +63,15 @@ public class ComputeInstanceTests
     [TestMethod]
     public void AddExpression_ThatAreInvalid_ThrowsException()
     {
-        Assert.ThrowsException<ExpressionCompileException>(
+        Assert.Throws<ExpressionCompileException>(
             () => instance.AddExpression("a", "true > false")
         );
 
-        Assert.ThrowsException<ExpressionCompileException>(
+        Assert.Throws<ExpressionCompileException>(
             () => instance.AddExpression("a", "Hello there < 1")
         );
 
-        Assert.ThrowsException<ExpressionCompileException>(
+        Assert.Throws<ExpressionCompileException>(
             () => instance.AddExpression("a", "1 == true")
         );
     }
@@ -97,11 +97,11 @@ public class ComputeInstanceTests
 
     [TestMethod]
     public void Generic_GetResult_DoesNotExist() =>
-        Assert.ThrowsException<KeyNotFoundException>(() => instance.GetResult<int>("a"));
+        Assert.Throws<KeyNotFoundException>(() => instance.GetResult<int>("a"));
 
     [TestMethod]
     public void GetResult_DoesNotExist() =>
-        Assert.ThrowsException<KeyNotFoundException>(() => instance.GetResult("a"));
+        Assert.Throws<KeyNotFoundException>(() => instance.GetResult("a"));
 
     [TestMethod]
     public void GetExpression_ContainsExpression()
@@ -123,8 +123,8 @@ public class ComputeInstanceTests
     [TestMethod]
     public void GetExpression_ExpressionDoesNotExists_ThrowsException()
     {
-        Assert.ThrowsException<KeyNotFoundException>(() => instance.GetExpression("a"));
-        Assert.ThrowsException<KeyNotFoundException>(() => instance.GetExpression<bool>("a"));
+        Assert.Throws<KeyNotFoundException>(() => instance.GetExpression("a"));
+        Assert.Throws<KeyNotFoundException>(() => instance.GetExpression<bool>("a"));
     }
 
     [TestMethod]

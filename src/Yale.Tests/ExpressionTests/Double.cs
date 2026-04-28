@@ -10,7 +10,6 @@ public class Double
     private readonly ComputeInstance _instance = new();
 
     [TestMethod]
-    [DataTestMethod]
     [DataRow("1.0", "+", "1.0", 2.0)]
     [DataRow("1.0", "-", "1.0", 0.0)]
     [DataRow("2.0", "*", "2.0", 4.0)]

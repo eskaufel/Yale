@@ -23,7 +23,7 @@ public class ValueCollection
     [TestMethod]
     public void SetValue_WithoutKey_ThrowsException()
     {
-        Assert.ThrowsException<ArgumentNullException>(() =>
+        Assert.Throws<ArgumentNullException>(() =>
         {
             Variables.Add(null, 2);
         });
@@ -32,12 +32,12 @@ public class ValueCollection
     [TestMethod]
     public void GetValue_WithoutKey_ThrowsException()
     {
-        Assert.ThrowsException<ArgumentNullException>(() =>
+        Assert.Throws<ArgumentNullException>(() =>
         {
             Variables.Get(null);
         });
 
-        Assert.ThrowsException<ArgumentNullException>(() =>
+        Assert.Throws<ArgumentNullException>(() =>
         {
             Variables.Get<object>(null);
         });
