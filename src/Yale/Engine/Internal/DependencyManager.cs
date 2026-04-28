@@ -120,10 +120,12 @@ internal ref struct DependentsResult
         _buffer[_count++] = item;
     }
 
-    public ReadOnlySpan<string>.Enumerator GetEnumerator() =>
-        _buffer is null
-            ? ReadOnlySpan<string>.Empty.GetEnumerator()
-            : _buffer.AsSpan(0, _count).GetEnumerator();
+    public ReadOnlySpan<string>.Enumerator GetEnumerator()
+    {
+        ReadOnlySpan<string> span =
+            _buffer is null ? ReadOnlySpan<string>.Empty : new ReadOnlySpan<string>(_buffer, 0, _count);
+        return span.GetEnumerator();
+    }
 
     public void Dispose()
     {
