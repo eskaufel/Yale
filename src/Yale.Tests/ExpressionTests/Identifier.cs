@@ -170,7 +170,7 @@ public class Identifier
         _instance.AddExpression("a", "x * 2");
         _instance.Variables.Add("y", 1);
 
-        Assert.ThrowsException<ExpressionCompileException>(() =>
+        Assert.Throws<ExpressionCompileException>(() =>
         {
             _instance.AddExpression("b", "a + y + b");
         });

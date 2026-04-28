@@ -67,7 +67,7 @@ public class Import
     {
         _instance.Imports.AddMethod("Sqrt", typeof(Math), "Test");
 
-        Assert.ThrowsException<ExpressionCompileException>(
+        Assert.Throws<ExpressionCompileException>(
             () => _instance.AddExpression("key", "Test.Pow(16)")
         );
     }

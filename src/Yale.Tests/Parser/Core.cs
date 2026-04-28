@@ -12,7 +12,7 @@ public class Core
     [TestMethod]
     public void Parse_InvalidToken_ThrowsException()
     {
-        Assert.ThrowsException<ExpressionCompileException>(
+        Assert.Throws<ExpressionCompileException>(
             () => instance.AddExpression<int>("a", "b")
         );
     }
