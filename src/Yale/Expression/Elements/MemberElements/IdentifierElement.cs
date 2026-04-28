@@ -40,14 +40,19 @@ internal sealed class IdentifierElement : MemberElement
         if (Context.Variables.TryGetValue(MemberName, out IVariable? value))
         {
             valueType = value.Type;
-            computeInstance?.AddDependency(Context.ExpressionName, MemberName);
+            var dependencyKey = Context.Variables.TryGetCanonicalKey(MemberName, out var canonical)
+                ? canonical
+                : MemberName;
+            computeInstance?.AddDependency(Context.ExpressionName, dependencyKey);
             return;
         }
 
         // Expression lookup from compute instance
         if (computeInstance?.ContainsExpression(MemberName) == true)
         {
-            computeInstance.AddDependency(Context.ExpressionName, MemberName);
+            var expressionDependencyKey =
+                computeInstance.GetCanonicalExpressionKey(MemberName) ?? MemberName;
+            computeInstance.AddDependency(Context.ExpressionName, expressionDependencyKey);
             calcEngineReferenceType = computeInstance.ResultType(MemberName);
             return;
         }

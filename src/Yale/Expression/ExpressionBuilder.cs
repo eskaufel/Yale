@@ -18,7 +18,7 @@ internal sealed class ExpressionBuilder
 
     private const string DynamicMethodName = "DynamicMethod";
 
-    internal VariableCollection Variables { get; } = new VariableCollection();
+    internal VariableCollection Variables { get; }
 
     public ImportCollection Imports { get; }
 
@@ -26,6 +26,7 @@ internal sealed class ExpressionBuilder
     {
         Options = new ExpressionBuilderOptions();
         ComputeInstance = instance;
+        Variables = new VariableCollection(Options.StringComparer);
         Imports = new ImportCollection(Options);
         Analyzer = new YaleExpressionAnalyzer();
         Parser = new ExpressionParser(TextReader.Null, Analyzer);
@@ -35,6 +36,7 @@ internal sealed class ExpressionBuilder
     {
         Options = options;
         ComputeInstance = instance;
+        Variables = new VariableCollection(Options.StringComparer);
         Imports = new ImportCollection(Options);
         Analyzer = new YaleExpressionAnalyzer();
         Parser = new ExpressionParser(TextReader.Null, Analyzer);

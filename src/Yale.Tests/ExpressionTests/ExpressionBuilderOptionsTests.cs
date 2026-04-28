@@ -125,4 +125,56 @@ public class ExpressionBuilderOptionsTests
         _instance.AddExpression("doubled", "RESULT * 2");
         Assert.AreEqual(16, _instance.GetResult<int>("doubled"));
     }
+
+    [TestMethod]
+    public void CaseSensitive_False_AllowsCaseInsensitiveVariableLookup()
+    {
+        _instance = new ComputeInstance(
+            new ComputeInstanceOptions
+            {
+                ExpressionOptions = new ExpressionBuilderOptions { CaseSensitive = false }
+            }
+        );
+        _instance.Variables.Add("myVar", 10);
+        _instance.AddExpression<int>("a", "myvar * 2");
+        Assert.AreEqual(20, _instance.GetResult<int>("a"));
+    }
+
+    [TestMethod]
+    public void CaseSensitive_False_VariableLookup_AutoRecalculate_UsesCanonicalKey()
+    {
+        var instance = new ComputeInstance(
+            new ComputeInstanceOptions
+            {
+                ExpressionOptions = new ExpressionBuilderOptions { CaseSensitive = false },
+                Recalculate = ComputeInstanceOptions.RecalculateMode.Auto,
+            }
+        );
+        instance.Variables.Add("myVar", 10);
+        instance.AddExpression<int>("a", "myvar * 2");
+        Assert.AreEqual(20, instance.GetResult<int>("a"));
+
+        // Updating via the canonical key must trigger recalculation
+        instance.Variables["myVar"] = 5;
+        Assert.AreEqual(10, instance.GetResult<int>("a"));
+    }
+
+    [TestMethod]
+    public void CaseSensitive_False_VariableLookup_AutoRecalculate_NonCanonicalUpdateKey()
+    {
+        var instance = new ComputeInstance(
+            new ComputeInstanceOptions
+            {
+                ExpressionOptions = new ExpressionBuilderOptions { CaseSensitive = false },
+                Recalculate = ComputeInstanceOptions.RecalculateMode.Auto,
+            }
+        );
+        instance.Variables.Add("myVar", 10);
+        instance.AddExpression<int>("a", "myvar * 2");
+        Assert.AreEqual(20, instance.GetResult<int>("a"));
+
+        // Updating via a different casing must also trigger recalculation
+        instance.Variables["MYVAR"] = 5;
+        Assert.AreEqual(10, instance.GetResult<int>("a"));
+    }
 }
