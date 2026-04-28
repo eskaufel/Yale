@@ -294,6 +294,16 @@ public class ComputeInstance
 
     public bool ContainsExpression(string key) => nameNodeMap.ContainsKey(key);
 
+    internal string? GetCanonicalExpressionKey(string key)
+    {
+        foreach (var k in nameNodeMap.Keys)
+        {
+            if (nameNodeMap.Comparer.Equals(k, key))
+                return k;
+        }
+        return null;
+    }
+
     public int ExpressionCount => nameNodeMap.Count;
 
     public string DependencyGraph => dependencies.DependencyGraph;

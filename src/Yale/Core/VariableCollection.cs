@@ -94,16 +94,20 @@ public sealed class VariableCollection
 
             values[key] = new Variable(value);
 
+            // Use the canonical stored key so PropertyChanged fires consistently regardless
+            // of the casing the caller used, keeping dependency tracking correct.
+            var eventKey = TryGetCanonicalKey(key, out var canonical) ? canonical : key;
+
             //Todo: What is the point of this? The value has not been changed,
             //is has only been added to the variables collection
             if (value is INotifyPropertyChanged nValue)
             {
                 nValue.PropertyChanged += (sender, args) =>
                 {
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(key));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(eventKey));
                 };
             }
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(key));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(eventKey));
         }
     }
 

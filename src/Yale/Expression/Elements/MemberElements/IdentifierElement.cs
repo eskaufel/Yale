@@ -50,7 +50,9 @@ internal sealed class IdentifierElement : MemberElement
         // Expression lookup from compute instance
         if (computeInstance?.ContainsExpression(MemberName) == true)
         {
-            computeInstance.AddDependency(Context.ExpressionName, MemberName);
+            var expressionDependencyKey =
+                computeInstance.GetCanonicalExpressionKey(MemberName) ?? MemberName;
+            computeInstance.AddDependency(Context.ExpressionName, expressionDependencyKey);
             calcEngineReferenceType = computeInstance.ResultType(MemberName);
             return;
         }
