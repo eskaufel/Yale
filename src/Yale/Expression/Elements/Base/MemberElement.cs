@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Yale.Core;
+﻿using Yale.Core;
 using Yale.Parser.Internal;
 using Yale.Resources;
 
@@ -197,31 +196,14 @@ internal abstract class MemberElement : BaseExpressionElement
     /// </summary>
     /// <param name="member"></param>
     /// <returns></returns>
-    private static bool IsMemberPublic(MemberInfo member)
-    {
-        var fieldInfo = member as FieldInfo;
-        if (fieldInfo is not null)
+    private static bool IsMemberPublic(MemberInfo member) =>
+        member switch
         {
-            return fieldInfo.IsPublic;
-        }
-
-        var propertyInfo = member as PropertyInfo;
-        if (propertyInfo is not null)
-        {
-            var method = propertyInfo.GetGetMethod(true);
-            return method?.IsPublic ?? false;
-        }
-
-        var methodInfo = member as MethodInfo;
-        if (methodInfo is not null)
-        {
-            return methodInfo.IsPublic;
-        }
-
-        //Todo: handle error case properly
-        Debug.Assert(false, "Unknown member type");
-        return false;
-    }
+            FieldInfo fieldInfo => fieldInfo.IsPublic,
+            PropertyInfo propertyInfo => propertyInfo.GetGetMethod(true)?.IsPublic ?? false,
+            MethodInfo methodInfo => methodInfo.IsPublic,
+            _ => false,
+        };
 
     protected static MemberInfo[] GetAccessibleMembers(MemberInfo[] members)
     {

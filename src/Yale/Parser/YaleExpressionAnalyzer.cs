@@ -151,7 +151,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
     public override Production ExitIndexExpression(Production production)
     {
         var childValues = GetChildValues(production);
-        ArgumentList args = new(childValues);
+        ArgumentList args = new(childValues.Cast<BaseExpressionElement>());
         IndexerElement e = new(args);
         production.Values.Add(e);
         return production;
@@ -202,7 +202,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
 
         if (second is IList list)
         {
-            op = new(operand, list);
+            op = new(operand, list.Cast<BaseExpressionElement>());
         }
         else
         {
@@ -288,7 +288,7 @@ internal sealed class YaleExpressionAnalyzer : ExpressionAnalyzer
         var childValues = GetChildValues(production);
         var name = (string)childValues[0];
         childValues.RemoveAt(0);
-        ArgumentList args = new(childValues);
+        ArgumentList args = new(childValues.Cast<BaseExpressionElement>());
         FunctionCallElement funcCall = new(name, args);
         production.Values.Add(funcCall);
         return production;

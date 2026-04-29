@@ -67,7 +67,7 @@ public sealed class VariableCollection
 
     public bool Remove(string key) => values.Remove(key);
 
-    public bool TryGetValue(string key, out object? value)
+    public bool TryGetValue(string key, [NotNullWhen(true)] out object? value)
     {
         var success = values.TryGetValue(key, out var result);
         value = result?.ValueAsObject;

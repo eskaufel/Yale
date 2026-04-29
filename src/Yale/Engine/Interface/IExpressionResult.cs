@@ -4,7 +4,7 @@ internal interface IExpressionResult
 {
     string Name { get; }
 
-    object ResultAsObject { get; }
+    object? ResultAsObject { get; }
 
     Type? ResultType { get; }
 
