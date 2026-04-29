@@ -4,9 +4,13 @@ internal interface IExpressionResult
 {
     string Name { get; }
 
+    string ExpressionText { get; }
+
     object? ResultAsObject { get; }
 
     Type? ResultType { get; }
+
+    Type DeclaredType { get; }
 
     void Recalculate();
 

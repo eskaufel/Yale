@@ -30,7 +30,11 @@ internal sealed class ExpressionResult<T> : IExpressionResult
 
     public bool Dirty { get; set; }
 
+    public string ExpressionText => Expression.ExpressionText;
+
     public Type? ResultType => Result?.GetType();
+
+    public Type DeclaredType => typeof(T);
 
     public object? ResultAsObject => Result;
 

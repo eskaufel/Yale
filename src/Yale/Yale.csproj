@@ -22,6 +22,7 @@
 		<PackageReadmeFile></PackageReadmeFile>
 		<NeutralLanguage>en-001</NeutralLanguage>
 		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+		<NoWarn>SYSLIB0055</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Include="..\..\.editorconfig" Link=".editorconfig" />
