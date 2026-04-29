@@ -86,8 +86,9 @@ internal sealed class AssemblyExpressionExporter
         ctorIl.Emit(OpCodes.Call, typeof(Attribute).GetConstructor(Type.EmptyTypes)!);
         ctorIl.Emit(OpCodes.Ret);
 
-        var builtAttrType = attrType.CreateType();
-        var attrCtor = builtAttrType.GetConstructor([typeof(string)])!;
-        assemblyBuilder.SetCustomAttribute(new CustomAttributeBuilder(attrCtor, [targetAssembly]));
+        attrType.CreateType();
+        // Use the ConstructorBuilder (not the baked RuntimeConstructorInfo) so that
+        // PersistedAssemblyBuilder encodes a correct in-module MemberRef.
+        assemblyBuilder.SetCustomAttribute(new CustomAttributeBuilder(ctor, [targetAssembly]));
     }
 }

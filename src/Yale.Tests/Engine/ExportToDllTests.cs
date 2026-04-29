@@ -144,7 +144,12 @@ public class ExportToDllTests
 
             var assembly = Assembly.LoadFrom(path);
             var type = assembly.GetType("YaleGeneratedExpressions")!;
-            Assert.AreEqual(0, type.GetMethods(BindingFlags.Public | BindingFlags.Static).Length);
+            Assert.AreEqual(
+                0,
+                type.GetMethods(
+                    BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly
+                ).Length
+            );
         }
         finally
         {
