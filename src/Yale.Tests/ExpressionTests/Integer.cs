@@ -173,4 +173,18 @@ public class Integer
         Assert.AreEqual(typeof(Int64), result.GetType());
         Assert.AreEqual((long)200, (Int64)result);
     }
+
+    [TestMethod]
+    public void UInt32LiteralAboveIntMaxValue_NoOverflow()
+    {
+        _instance.AddExpression<uint>("a", "2147483648U");
+        Assert.AreEqual(2147483648u, _instance.GetResult<uint>("a"));
+    }
+
+    [TestMethod]
+    public void UInt64LiteralAboveLongMaxValue_NoOverflow()
+    {
+        _instance.AddExpression<ulong>("a", "9223372036854775808LU");
+        Assert.AreEqual(9223372036854775808UL, _instance.GetResult<ulong>("a"));
+    }
 }
