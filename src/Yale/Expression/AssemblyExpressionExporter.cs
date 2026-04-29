@@ -20,7 +20,10 @@ internal sealed class AssemblyExpressionExporter
     internal void Export(IEnumerable<IExpressionResult> expressions, string outputPath)
     {
         var assemblyName = new AssemblyName(Path.GetFileNameWithoutExtension(outputPath));
-        var assemblyBuilder = new PersistedAssemblyBuilder(assemblyName, typeof(object).Assembly);
+        var assemblyBuilder = AssemblyBuilder.DefinePersistedAssembly(
+            assemblyName,
+            typeof(object).Assembly
+        );
 
         var module = assemblyBuilder.DefineDynamicModule(assemblyName.Name!);
 
@@ -87,8 +90,8 @@ internal sealed class AssemblyExpressionExporter
         ctorIl.Emit(OpCodes.Ret);
 
         attrType.CreateType();
-        // Use the ConstructorBuilder (not the baked RuntimeConstructorInfo) so that
-        // PersistedAssemblyBuilder encodes a correct in-module MemberRef.
+        // Use the ConstructorBuilder (not a baked RuntimeConstructorInfo) so the persisted
+        // assembly writer encodes a correct in-module MemberRef.
         assemblyBuilder.SetCustomAttribute(new CustomAttributeBuilder(ctor, [targetAssembly]));
     }
 }
