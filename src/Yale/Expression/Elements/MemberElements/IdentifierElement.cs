@@ -245,6 +245,13 @@ internal sealed class IdentifierElement : MemberElement
     private static void EmitLiteral(FieldInfo fi, YaleIlGenerator ilg, ExpressionContext context)
     {
         var value = fi.GetValue(null);
+
+        if (value is null)
+        {
+            new NullLiteralElement().Emit(ilg, context);
+            return;
+        }
+
         var type = value.GetType();
         var typeCode = Type.GetTypeCode(type);
         LiteralElement? elem;
@@ -390,7 +397,13 @@ internal sealed class IdentifierElement : MemberElement
                 return field.IsPublic;
             }
 
-            var methodInfo = property.GetGetMethod(true);
+            if (property is null)
+                throw new InvalidOperationException("No member resolved for identifier");
+            var methodInfo =
+                property.GetGetMethod(true)
+                ?? throw new InvalidOperationException(
+                    $"Property '{property.Name}' has no getter"
+                );
             return methodInfo.IsPublic;
         }
     }
@@ -473,7 +486,13 @@ internal sealed class IdentifierElement : MemberElement
                 return false;
             }
 
-            var methodInfo = property.GetGetMethod(true);
+            if (property is null)
+                throw new InvalidOperationException("No member resolved for identifier");
+            var methodInfo =
+                property.GetGetMethod(true)
+                ?? throw new InvalidOperationException(
+                    $"Property '{property.Name}' has no getter"
+                );
             return methodInfo.IsStatic;
         }
     }
