@@ -30,13 +30,9 @@ internal sealed class ExpressionResult<T> : IExpressionResult
 
     public bool Dirty { get; set; }
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-    public Type ResultType => Result.GetType();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+    public Type? ResultType => Result?.GetType();
 
-#pragma warning disable CS8603 // Possible null reference return.
-    public object ResultAsObject => Result;
-#pragma warning restore CS8603 // Possible null reference return.
+    public object? ResultAsObject => Result;
 
     public Expression<T> GetExpression() => Expression;
 

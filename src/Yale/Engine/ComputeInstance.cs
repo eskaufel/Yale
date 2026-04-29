@@ -125,7 +125,7 @@ public class ComputeInstance
         node.Recalculate();
 
         //No need to recalculate dependents if value is the same.
-        if (result.Equals(node.ResultAsObject))
+        if (Equals(result, node.ResultAsObject))
             return;
 
         using var dependents = dependencies.GetDependents(key);
@@ -210,11 +210,11 @@ public class ComputeInstance
     }
 
     /// <summary>
-    /// Get expression result
+    /// Get expression result. May be null when the expression evaluates to null.
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public object GetResult(string key)
+    public object? GetResult(string key)
     {
         ArgumentNullException.ThrowIfNull(key);
 
@@ -226,7 +226,7 @@ public class ComputeInstance
     }
 
     /// <summary>
-    /// Get expression result
+    /// Get expression result. Cast to T; T should accommodate null when the expression can evaluate to null.
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
@@ -234,14 +234,14 @@ public class ComputeInstance
     {
         ArgumentNullException.ThrowIfNull(key);
 
-        return (T)GetResult(key);
+        return (T)GetResult(key)!;
     }
 
     public bool TryGetResult(string key, [NotNullWhen(true)] out object? result)
     {
         ArgumentNullException.ThrowIfNull(key);
 
-        result = nameNodeMap.ContainsKey(key) ? GetResult(key) : default;
+        result = nameNodeMap.ContainsKey(key) ? GetResult(key) : null;
         return result != null;
     }
 
@@ -250,7 +250,7 @@ public class ComputeInstance
     {
         ArgumentNullException.ThrowIfNull(key);
 
-        result = nameNodeMap.ContainsKey(key) ? (T)GetResult(key) : default;
+        result = nameNodeMap.ContainsKey(key) ? (T?)GetResult(key) : null;
         return result != null;
     }
 

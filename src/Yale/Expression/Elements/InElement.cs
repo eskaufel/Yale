@@ -9,24 +9,20 @@ internal sealed class InElement : BaseExpressionElement
     // Element we will search for
     private readonly BaseExpressionElement operand;
 
-    // Elements we will compare against
-    private readonly List<BaseExpressionElement> arguments;
+    // Elements we will compare against (only set in list-search mode)
+    private readonly List<BaseExpressionElement>? arguments;
 
-    // Collection to look in
-    private readonly BaseExpressionElement targetCollectionElement;
+    // Collection to look in (only set in collection-search mode)
+    private readonly BaseExpressionElement? targetCollectionElement;
 
-    // Type of the collection
-    private Type targetCollectionType;
+    // Type of the collection (only set in collection-search mode)
+    private readonly Type? targetCollectionType;
 
     // Initialize for searching a list of values
-    public InElement(BaseExpressionElement operand, IList listElements)
+    public InElement(BaseExpressionElement operand, IEnumerable<BaseExpressionElement> listElements)
     {
         this.operand = operand;
-
-        BaseExpressionElement[] elements = new BaseExpressionElement[listElements.Count];
-        listElements.CopyTo(elements, 0);
-
-        arguments = new List<BaseExpressionElement>(elements);
+        arguments = listElements.ToList();
         ResolveForListSearch();
     }
 
@@ -35,7 +31,7 @@ internal sealed class InElement : BaseExpressionElement
     {
         this.operand = operand;
         targetCollectionElement = targetCollection;
-        ResolveForCollectionSearch();
+        targetCollectionType = ResolveForCollectionSearch();
     }
 
     private void ResolveForListSearch()
@@ -43,29 +39,29 @@ internal sealed class InElement : BaseExpressionElement
         CompareElement compareElement = new();
 
         // Validate that our operand is comparable to all elements in the list
-        foreach (var argumentElement in arguments)
+        foreach (var argumentElement in arguments!)
         {
             compareElement.Initialize(operand, argumentElement, LogicalCompareOperation.Equal);
             compareElement.Validate();
         }
     }
 
-    private void ResolveForCollectionSearch()
+    private Type ResolveForCollectionSearch()
     {
         // Try to find a collection type
-        targetCollectionType = GetTargetCollectionType();
+        var resolvedType = GetTargetCollectionType();
 
-        if (targetCollectionType is null)
+        if (resolvedType is null)
         {
             throw CreateCompileException(
                 CompileErrors.SearchArgIsNotKnownCollectionType,
                 CompileExceptionReason.TypeMismatch,
-                targetCollectionElement.ResultType.Name
+                targetCollectionElement!.ResultType.Name
             );
         }
 
         // Validate that the operand type is compatible with the collection
-        var methodInfo = GetCollectionContainsMethod();
+        var methodInfo = GetCollectionContainsMethod(resolvedType);
         var firstParameter = methodInfo.GetParameters()[0];
 
         if (
@@ -83,11 +79,13 @@ internal sealed class InElement : BaseExpressionElement
                 firstParameter.ParameterType.Name
             );
         }
+
+        return resolvedType;
     }
 
-    private Type GetTargetCollectionType()
+    private Type? GetTargetCollectionType()
     {
-        var collType = targetCollectionElement.ResultType;
+        var collType = targetCollectionElement!.ResultType;
 
         // Try to see if the collection is a generic ICollection or IDictionary
         var interfaces = collType.GetInterfaces();
@@ -153,11 +151,11 @@ internal sealed class InElement : BaseExpressionElement
     private void EmitCollectionIn(YaleIlGenerator ilg, ExpressionContext context)
     {
         // Get the contains method
-        var methodInfo = GetCollectionContainsMethod();
+        var methodInfo = GetCollectionContainsMethod(targetCollectionType!);
         var firstParameter = methodInfo.GetParameters()[0];
 
         // Load the collection
-        targetCollectionElement.Emit(ilg, context);
+        targetCollectionElement!.Emit(ilg, context);
         // Load the argument
         operand.Emit(ilg, context);
         // Do an implicit convert if necessary
@@ -170,14 +168,14 @@ internal sealed class InElement : BaseExpressionElement
         ilg.Emit(OpCodes.Callvirt, methodInfo);
     }
 
-    private MethodInfo GetCollectionContainsMethod()
+    private static MethodInfo GetCollectionContainsMethod(Type collectionType)
     {
         var methodName = "Contains";
 
         if (
-            targetCollectionType.IsGenericType
+            collectionType.IsGenericType
             && ReferenceEquals(
-                targetCollectionType.GetGenericTypeDefinition(),
+                collectionType.GetGenericTypeDefinition(),
                 typeof(IDictionary<,>)
             )
         )
@@ -185,10 +183,10 @@ internal sealed class InElement : BaseExpressionElement
             methodName = "ContainsKey";
         }
 
-        return targetCollectionType.GetMethod(
+        return collectionType.GetMethod(
             methodName,
             BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase
-        );
+        )!;
     }
 
     private void EmitListIn(
@@ -212,7 +210,7 @@ internal sealed class InElement : BaseExpressionElement
         LocalBasedElement targetShim = new(operand, targetIndex);
 
         // Emit the compares
-        foreach (var argumentElement in arguments)
+        foreach (var argumentElement in arguments!)
         {
             compareElement.Initialize(targetShim, argumentElement, LogicalCompareOperation.Equal);
             compareElement.Emit(ilg, context);

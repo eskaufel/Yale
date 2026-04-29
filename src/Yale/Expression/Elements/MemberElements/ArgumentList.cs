@@ -10,11 +10,9 @@ internal sealed class ArgumentList
 {
     private readonly BaseExpressionElement[] _elements;
 
-    public ArgumentList(ICollection elements)
+    public ArgumentList(IEnumerable<BaseExpressionElement> elements)
     {
-        var arr = new BaseExpressionElement[elements.Count];
-        elements.CopyTo(arr, 0);
-        _elements = arr;
+        _elements = elements.ToArray();
     }
 
     private string[] GetArgumentTypeNames()

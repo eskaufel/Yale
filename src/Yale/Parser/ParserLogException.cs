@@ -9,7 +9,7 @@ public class ParserLogException : Exception
     /**
      * The list of errors found.
      */
-    private readonly ArrayList errors = new();
+    private readonly List<ParseException> errors = new();
 
     /**
      * Creates a new empty parser log exception.
@@ -60,7 +60,7 @@ public class ParserLogException : Exception
      */
     public ParseException this[int index]
     {
-        get { return (ParseException)errors[index]; }
+        get { return errors[index]; }
     }
 
     /**
