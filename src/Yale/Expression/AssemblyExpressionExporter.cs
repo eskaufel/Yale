@@ -25,7 +25,7 @@ internal sealed class AssemblyExpressionExporter
         var module = assemblyBuilder.DefineDynamicModule(assemblyName.Name!);
 
         // Allow the generated assembly to call Yale's internal types (e.g. ExpressionContext).
-        DefineIgnoresAccessChecksTo(module, "Yale");
+        DefineIgnoresAccessChecksTo(assemblyBuilder, module, "Yale");
 
         var type = module.DefineType(
             "YaleGeneratedExpressions",
@@ -62,7 +62,11 @@ internal sealed class AssemblyExpressionExporter
 
     // The CLR recognises IgnoresAccessChecksToAttribute by its full name regardless of which
     // assembly defines it, so we emit the attribute type into the generated module itself.
-    private static void DefineIgnoresAccessChecksTo(ModuleBuilder module, string targetAssembly)
+    private static void DefineIgnoresAccessChecksTo(
+        AssemblyBuilder assemblyBuilder,
+        ModuleBuilder module,
+        string targetAssembly
+    )
     {
         var attrType = module.DefineType(
             "System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute",
@@ -84,8 +88,6 @@ internal sealed class AssemblyExpressionExporter
 
         var builtAttrType = attrType.CreateType();
         var attrCtor = builtAttrType.GetConstructor([typeof(string)])!;
-        module.Assembly.SetCustomAttribute(
-            new CustomAttributeBuilder(attrCtor, [targetAssembly])
-        );
+        assemblyBuilder.SetCustomAttribute(new CustomAttributeBuilder(attrCtor, [targetAssembly]));
     }
 }
