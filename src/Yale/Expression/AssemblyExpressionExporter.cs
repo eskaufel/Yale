@@ -20,10 +20,7 @@ internal sealed class AssemblyExpressionExporter
     internal void Export(IEnumerable<IExpressionResult> expressions, string outputPath)
     {
         var assemblyName = new AssemblyName(Path.GetFileNameWithoutExtension(outputPath));
-        var assemblyBuilder = AssemblyBuilder.DefinePersistedAssembly(
-            assemblyName,
-            typeof(object).Assembly
-        );
+        var assemblyBuilder = new PersistedAssemblyBuilder(assemblyName, typeof(object).Assembly);
 
         var module = assemblyBuilder.DefineDynamicModule(assemblyName.Name!);
 
