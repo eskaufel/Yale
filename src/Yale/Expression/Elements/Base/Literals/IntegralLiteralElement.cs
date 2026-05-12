@@ -89,7 +89,7 @@ internal abstract class IntegralLiteralElement : LiteralElement
         }
 
         // If the literal is suffixed by UL, Ul, uL, ul, LU, Lu, lU, or lu, it is of type ulong.
-        Debug.Assert(true, "expecting ul suffix");
+        Debug.Assert(hasUlSuffix, "expecting ul suffix");
         image = image.Remove(image.Length - 2);
         return new UInt64LiteralElement(image, numStyles);
     }

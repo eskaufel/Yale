@@ -89,11 +89,11 @@ public class Integer
     [TestMethod]
     public void IntegerAdditionIntegerOverFlow_Exception()
     {
-        Assert.Throws<OverflowException>(
-            () => _instance.AddExpression("a", $"{long.MaxValue} + 1")
+        Assert.Throws<OverflowException>(() =>
+            _instance.AddExpression("a", $"{long.MaxValue} + 1")
         );
-        Assert.Throws<OverflowException>(
-            () => _instance.AddExpression<long>("b", $"{long.MaxValue} + 1")
+        Assert.Throws<OverflowException>(() =>
+            _instance.AddExpression<long>("b", $"{long.MaxValue} + 1")
         );
     }
 
@@ -114,11 +114,11 @@ public class Integer
     [TestMethod]
     public void IntegerSubtractionIntegerOverFlow_Exception()
     {
-        Assert.Throws<OverflowException>(
-            () => _instance.AddExpression("a", $"{long.MinValue} - 1")
+        Assert.Throws<OverflowException>(() =>
+            _instance.AddExpression("a", $"{long.MinValue} - 1")
         );
-        Assert.Throws<OverflowException>(
-            () => _instance.AddExpression<long>("b", $"{long.MinValue} - 1")
+        Assert.Throws<OverflowException>(() =>
+            _instance.AddExpression<long>("b", $"{long.MinValue} - 1")
         );
     }
 
@@ -172,5 +172,29 @@ public class Integer
         result = _instance.GetResult("e2");
         Assert.AreEqual(typeof(Int64), result.GetType());
         Assert.AreEqual((long)200, (Int64)result);
+    }
+
+    [TestMethod]
+    public void UInt32LiteralAboveIntMaxValue_NoOverflow()
+    {
+        // 2147483648 = int.MaxValue + 1; previously threw OverflowException during compilation
+        _instance.AddExpression<uint>("a", "2147483648U");
+        Assert.AreEqual(2147483648u, _instance.GetResult<uint>("a"));
+
+        // uint.MaxValue = 4294967295
+        _instance.AddExpression<uint>("b", "4294967295U");
+        Assert.AreEqual(uint.MaxValue, _instance.GetResult<uint>("b"));
+    }
+
+    [TestMethod]
+    public void UInt64LiteralAboveLongMaxValue_NoOverflow()
+    {
+        // 9223372036854775808 = long.MaxValue + 1; previously threw OverflowException during compilation
+        _instance.AddExpression<ulong>("a", "9223372036854775808LU");
+        Assert.AreEqual(9223372036854775808UL, _instance.GetResult<ulong>("a"));
+
+        // ulong.MaxValue = 18446744073709551615
+        _instance.AddExpression<ulong>("b", "18446744073709551615LU");
+        Assert.AreEqual(ulong.MaxValue, _instance.GetResult<ulong>("b"));
     }
 }
