@@ -44,24 +44,8 @@ internal sealed class ExpressionBuilder
 
     internal Expression<T> BuildExpression<T>(string expressionName, string expression)
     {
-        var owner = DefaultExpressionOwner.Instance;
         var ownerType = DefaultExpressionOwner.Type;
-
-        Imports.ImportOwner(ownerType);
-
-        ExpressionContext context =
-            new(
-                builderOptions: Options,
-                expressionName: expressionName,
-                owner: owner,
-                imports: Imports,
-                variables: Variables,
-                computeInstance: ComputeInstance
-            );
-
-        var topElement = Parse(expression, context);
-
-        RootExpressionElement rootElement = new(topElement, typeof(T));
+        var (rootElement, context) = ParseToRootElement(expressionName, expression, typeof(T));
         var dynamicMethod = CreateDynamicMethod<T>(ownerType);
 
         YaleIlGenerator ilGenerator = new(dynamicMethod.GetILGenerator());
@@ -75,6 +59,41 @@ internal sealed class ExpressionBuilder
         var evaluator = (ExpressionEvaluator<T>)dynamicMethod.CreateDelegate(delegateType);
 
         return new Expression<T>(expression, evaluator, context);
+    }
+
+    internal void EmitToILGenerator(
+        string expressionName,
+        string expression,
+        Type returnType,
+        ILGenerator ilGenerator
+    )
+    {
+        var (rootElement, context) = ParseToRootElement(expressionName, expression, returnType);
+        YaleIlGenerator yaleIlGen = new(ilGenerator);
+        rootElement.Emit(yaleIlGen, context);
+    }
+
+    private (RootExpressionElement Root, ExpressionContext Context) ParseToRootElement(
+        string expressionName,
+        string expression,
+        Type returnType
+    )
+    {
+        var ownerType = DefaultExpressionOwner.Type;
+        Imports.ImportOwner(ownerType);
+
+        ExpressionContext context =
+            new(
+                builderOptions: Options,
+                expressionName: expressionName,
+                owner: DefaultExpressionOwner.Instance,
+                imports: Imports,
+                variables: Variables,
+                computeInstance: ComputeInstance
+            );
+
+        var topElement = Parse(expression, context);
+        return (new RootExpressionElement(topElement, returnType), context);
     }
 
     private BaseExpressionElement Parse(string expression, ExpressionContext context)

@@ -294,6 +294,17 @@ public class ComputeInstance
 
     public bool ContainsExpression(string key) => nameNodeMap.ContainsKey(key);
 
+    /// <summary>
+    /// Exports all compiled expressions as static methods in a persisted .NET assembly saved to <paramref name="outputPath"/>.
+    /// The generated assembly references Yale.dll; load it in a process that has Yale available.
+    /// </summary>
+    public void ExportToDll(string outputPath)
+    {
+        ArgumentNullException.ThrowIfNull(outputPath);
+        var exporter = new AssemblyExpressionExporter(Builder);
+        exporter.Export(nameNodeMap.Values, outputPath);
+    }
+
     internal string? GetCanonicalExpressionKey(string key)
     {
         foreach (var k in nameNodeMap.Keys)
